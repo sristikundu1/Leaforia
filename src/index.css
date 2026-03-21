@@ -1,0 +1,40 @@
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700;800&family=Poppins:wght@500;600&display=swap");
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  default: true;
+  --color-primary: #1b3022;
+  --color-secondary: #718355;
+  --color-accent: #0b1a13;
+  --color-base-100: #fffff0;
+
+  /* Font Family Definitions */
+  /* --font-montserrat: "Montserrat", sans-serif;
+  --font-lato: "Lato", sans-serif;
+  --font-poppins: "Poppins", sans-serif; */
+}
+
+/* Apply specific fonts to elements globally */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: -0.02em; /* Makes Montserrat look more "elegant" */
+}
+
+body {
+  font-family: "Lato", sans-serif;
+}
+
+/* Force DaisyUI buttons to use Poppins */
+.btn {
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase; /* Common for Poppins UI buttons */
+  letter-spacing: 0.05em;
+}
