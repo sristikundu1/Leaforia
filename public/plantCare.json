@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "title": "Watering Tips",
+    "description": "Water your plants when the top soil feels dry. Avoid overwatering to prevent root rot and keep the roots healthy.",
+    "icon": "water",
+    "bg": "https://wallygrow.com/cdn/shop/articles/Watering_Guide_Cover_6a3601ac-ed61-4f6b-b0a9-e100b4e296d5_4100x.jpg?v=1570119062"
+  },
+  {
+    "id": 2,
+    "title": "Sunlight Tips",
+    "description": "Keep your plants in bright, indirect sunlight for several hours a day. Avoid exposing delicate plants to harsh direct sunlight to prevent leaf burn.",
+    "icon": "sun",
+    "bg": "https://getplantkiss.com/cdn/shop/articles/what-light-is-best-for-your-plants.jpg?v=1680569426&width=1100"
+  },
+  {
+    "id": 3,
+    "title": "Fertilizing Tips",
+    "description": "Fertilize your indoor plants once every two weeks during the growing season. Use a balanced fertilizer to promote healthy leaves and flowers.",
+    "icon": "leaf",
+    "bg": "https://nestingwithgrace.com/wp-content/uploads/2019/06/house-plants-house-plant-tips-should-I-fertilze-plants-best-fertilizer-45.jpg"
+  }
+]

@@ -17,14 +17,18 @@ const Plants = () => {
         <p className="font-medium text-lg text-secondary ">
           Easy, beautiful, and healthy plants.
         </p>
-        <h2 className="font-bold text-3xl text-primary  mb-5">
+        <h2 className="font-bold text-3xl text-primary  mb-14">
           Our Indoor Plants Collection
         </h2>
       </div>
 
       <div>
-        <Suspense fallback={<p>Loading......</p>}>
-          <div className="grid grid-cols-3 gap-5 ">
+        <Suspense
+          fallback={
+            <span className="loading loading-dots loading-xl flex justify-center items-center"></span>
+          }
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 ">
             {visiblePlants.map((plants) => (
               <PlantCard key={plants.plantId} plants={plants}></PlantCard>
             ))}

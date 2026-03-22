@@ -53,7 +53,7 @@ const PlantCard = ({ plants }) => {
               );
             })}
 
-            <span className="text-[#706f6f] font-medium ml-2">{rating}</span>
+            <span className="text-secondary font-semibold ml-2">{rating}</span>
           </div>
           <h3 className="mb-2 text-xl font-medium text-gray-800">
             {plantName}

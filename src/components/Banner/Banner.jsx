@@ -29,7 +29,7 @@ const Banner = () => {
             }}
           >
             <div className="hero-overlay bg-slate-900/20"></div>
-            <div className="text-center">
+            <div className=" hero-content text-center">
               <div className="max-w-8/12">
                 <h1 className="mb-5 text-5xl font-bold text-primary">
                   Bring Nature Inside Your Home
@@ -53,7 +53,7 @@ const Banner = () => {
             }}
           >
             <div className="hero-overlay bg-slate-900/20"></div>
-            <div className="  text-left">
+            <div className=" hero-content text-left">
               <div className="max-w-11/12">
                 <h1 className="mb-5 text-5xl font-bold text-primary">
                   Premium Indoor Plants <br /> for Every Corner
