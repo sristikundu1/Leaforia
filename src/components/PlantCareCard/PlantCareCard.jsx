@@ -14,8 +14,8 @@ const PlantCareCard = ({ plantCare, index }) => {
   return (
     <div
       className={`
-        group relative h-[500px] rounded-xl overflow-hidden shadow-lg
-        md:${index === 1 ? "mt-0" : "mt-12"}
+        group relative h-[500px] rounded-xl overflow-hidden shadow-lg mt-6
+        ${index === 1 ? "md:mt-0" : "md:mt-12"}
       `}
     >
       {/* bg image */}
