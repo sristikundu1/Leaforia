@@ -43,8 +43,8 @@ const Navbar = () => {
     </>
   );
   return (
-    <div>
-      <div className="navbar bg-base-100 shadow-sm px-36">
+    <div className="sticky top-0 z-50 bg-base-100/80 backdrop-blur-md">
+      <div className="navbar bg-transparent shadow-[0_8px_30px_rgb(0,0,0,0.04)] max-w-10/12 mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -71,13 +71,18 @@ const Navbar = () => {
             </ul>
           </div>
           <div>
-            <img className="w-40 h-auto" src={logo} alt="logo" />
+            <img className="w-20 md:w-40 h-auto" src={logo} alt="logo" />
           </div>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end gap-8">
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0}>
+              <button className="btn bg-primary text-white px-6">login</button>
+            </div>
+          </div>
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
