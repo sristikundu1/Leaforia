@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { FaRegHeart, FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { useLoaderData, useParams } from "react-router";
+import Consultation from "../../components/Consultation/Consultation";
+import PlantCard from "../../components/PlantCard/PlantCard";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 const PlantDetails = () => {
   const [quantity, setQuantity] = useState(1); // default quantity 1
@@ -10,6 +15,10 @@ const PlantDetails = () => {
   console.log(allPlants, id);
 
   const plantData = allPlants?.find((plant) => plant.plantId == id);
+
+  const relatedPlant = allPlants?.filter(
+    (plant) => plant.category === plantData.category && plant.plantId != id,
+  );
 
   const {
     plantId,
@@ -34,6 +43,32 @@ const PlantDetails = () => {
     if (quantity > 1) {
       setQuantity((prev) => prev - 1);
     }
+  };
+
+  // Add this line to handle the "object" error
+  const SlickSlider = Slider.default || Slider;
+
+  const settings = {
+    infinite: true,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    swipeToSlide: true,
+    speed: 500,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 3 },
+      },
+      {
+        breakpoint: 768,
+        settings: { slidesToShow: 2 },
+      },
+      {
+        breakpoint: 640,
+        settings: { slidesToShow: 1 },
+      },
+    ],
   };
 
   return (
@@ -124,6 +159,30 @@ const PlantDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* related products  */}
+
+      {relatedPlant.length > 1 && (
+        <div className="text-center my-20">
+          <h2 className="font-bold text-3xl text-primary  mb-14">
+            Related Products
+          </h2>
+
+          <div className="mt-10">
+            <SlickSlider {...settings}>
+              {relatedPlant.map((plant) => (
+                <div key={plant.plantId} className="px-2 py-4">
+                  <PlantCard plants={plant} />
+                </div>
+              ))}
+            </SlickSlider>
+          </div>
+        </div>
+      )}
+
+      {/* consultant form  */}
+
+      <Consultation></Consultation>
     </div>
   );
 };
