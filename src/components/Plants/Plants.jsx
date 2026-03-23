@@ -1,7 +1,7 @@
 import React, { Suspense, use, useState } from "react";
 import PlantCard from "../PlantCard/PlantCard";
 
-const plantPromises = fetch("plants.json").then((res) => res.json());
+const plantPromises = fetch("/plants.json").then((res) => res.json());
 const Plants = () => {
   const allPlants = use(plantPromises);
 

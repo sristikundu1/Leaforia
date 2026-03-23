@@ -3,7 +3,7 @@ import PlantCareCard from "../PlantCareCard/PlantCareCard";
 import careCover from "../../assets/banner-bg-3.jpg";
 
 // fetch the data
-const plantCarePromises = fetch("plantCare.json").then((res) => res.json());
+const plantCarePromises = fetch("/plantCare.json").then((res) => res.json());
 
 const PlantCare = () => {
   const plantCareData = use(plantCarePromises);

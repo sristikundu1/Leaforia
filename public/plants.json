@@ -7,7 +7,7 @@
     "rating": 4.8,
     "availableStock": 10,
     "careLevel": "Easy",
-    "description": "A hardy indoor plant known for purifying air and surviving in low light conditions. Perfect for beginners and busy people.",
+    "description": "The Snake Plant, or Sansevieria, is a hardy and striking indoor plant, admired for its tall, upright leaves and elegant appearance. It thrives in a variety of light conditions, from bright indirect light to low-light spaces, making it an excellent choice for beginners and busy people. Snake Plants require minimal maintenance and should be watered only when the soil is completely dry to avoid root rot. Their air-purifying properties help remove toxins such as formaldehyde, xylene, and toluene, enhancing indoor air quality. Slow-growing but rewarding, Snake Plants produce offsets or 'pups' that can be propagated to create new plants. They can be displayed individually as a statement piece or grouped for a lush indoor garden. This plant is also virtually pest-free and adapts well to different interior styles, from modern minimalist to traditional. Its resilience, aesthetic appeal, and functional benefits make it a popular and reliable choice for anyone looking to enhance their indoor space.",
     "image": "https://prickleplants.co.uk/cdn/shop/files/1Sansevieria-Laurentii-Lifestyle-Group-Collection.jpg?v=1746529554",
     "providerName": "UrbanGreen Studio"
   },
@@ -19,7 +19,7 @@
     "rating": 4.7,
     "availableStock": 12,
     "careLevel": "Easy",
-    "description": "Aloe Vera is a medicinal plant with soothing gel inside its leaves. Needs bright light and little water.",
+    "description": "Aloe Vera is a succulent known for both its beauty and medicinal properties. Its thick leaves contain soothing gel that can treat burns, moisturize skin, and support wellness. Aloe Vera thrives in bright, indirect light but can tolerate some direct sunlight, making it suitable for indoor and outdoor spaces. Water the plant only when the soil is completely dry to prevent root rot. It requires minimal care, making it ideal for beginners. Aloe Vera also contributes to improved indoor air quality by releasing oxygen and filtering pollutants. It can be propagated through offsets, allowing gardeners to expand their collection easily. Its rosette shape and thick green leaves add aesthetic appeal to any room, from kitchens and living rooms to offices. Aloe Vera complements a variety of décor styles and offers both functional and visual benefits, combining health, beauty, and low-maintenance care in one versatile plant.",
     "image": "https://nurserylive.com/cdn/shop/products/nurserylive-plants-aloe-vera-succulent-plant-16968585871500_700x700.jpg?v=1634213151",
     "providerName": "NatureNest"
   },
@@ -31,7 +31,7 @@
     "rating": 4.9,
     "availableStock": 8,
     "careLevel": "Medium",
-    "description": "Peace Lily produces beautiful white flowers and improves indoor air quality. Needs moderate watering.",
+    "description": "The Peace Lily is a graceful indoor plant with glossy green leaves and elegant white blooms. It thrives in bright indirect light but tolerates low-light conditions, though it may bloom less often. Regular watering to keep soil evenly moist is necessary, but avoid overwatering to prevent root rot. Fertilizing every 6-8 weeks helps maintain healthy growth and flowers. Peace Lilies are excellent air purifiers, filtering pollutants and improving indoor air quality. Their aesthetic and functional benefits make them suitable for living rooms, bedrooms, and office spaces. They require moderate care but reward attention with vibrant foliage and beautiful flowers. Peace Lilies symbolize tranquility and elegance, adding a serene touch to interiors. Their adaptability, combined with decorative and health benefits, makes them a popular choice for both novice and experienced plant lovers.",
     "image": "https://www.leafenvy.co.uk/cdn/shop/files/Peace_Lily_12cm_Hero.jpg?v=1767453153",
     "providerName": "GreenAura"
   },
@@ -43,7 +43,7 @@
     "rating": 5,
     "availableStock": 15,
     "careLevel": "Easy",
-    "description": "Spider plants grow fast and help clean indoor air. Great for hanging pots and small rooms.",
+    "description": "The Spider Plant is a resilient indoor plant with long, arching green and white striped leaves. It thrives in bright indirect light but adapts to lower light levels, making it versatile for various indoor spaces. Spider Plants prefer moderately moist soil and benefit from occasional watering, but overwatering should be avoided. They produce offshoots or 'spiderettes' that can be propagated into new plants, making them ideal for creating indoor plant clusters. Their air-purifying properties help remove toxins from the environment, enhancing indoor air quality. Easy to care for, visually appealing, and suitable for hanging baskets or shelves, Spider Plants are a favorite for beginners and experienced gardeners alike. Minimal fertilization during the growing season is enough to keep them healthy and lush.",
     "image": "https://cdn.mos.cms.futurecdn.net/v2/t:0,l:200,cw:1200,ch:900,q:80,w:1200/ZdQhogvwxXB836xnLsBXWE.jpg",
     "providerName": "LeafyLife"
   },
@@ -55,7 +55,7 @@
     "rating": 4.8,
     "availableStock": 6,
     "careLevel": "Medium",
-    "description": "A tall decorative palm that adds a tropical look to your home. Needs bright indirect light.",
+    "description": "The Areca Palm is a tall and graceful indoor plant with feathery, arching fronds that bring a tropical vibe to any interior. It prefers bright, indirect sunlight and well-draining soil, making it ideal for living rooms and spacious corners. Regular watering is needed to keep the soil moist, but overwatering should be avoided to prevent root rot. Occasional fertilization during the growing season enhances its lush foliage. Areca Palms are excellent for improving indoor air quality, removing toxins, and adding humidity to the environment. Its elegant appearance makes it a centerpiece in decorative arrangements, complementing both modern and classic interiors. Propagation is possible through division of clumps, allowing gardeners to expand their green collection. With moderate care, the Areca Palm remains a long-lasting, vibrant addition to indoor spaces, providing both aesthetic appeal and functional benefits.",
     "image": "https://vckgreens.in/cdn/shop/files/Artificial-Areca-Palm-2.5ft-PLT-1602-Main2.jpg?v=1766651904&width=1341",
     "providerName": "Plantique Garden"
   },
@@ -67,7 +67,7 @@
     "rating": 4.9,
     "availableStock": 9,
     "careLevel": "Easy",
-    "description": "ZZ plant survives in very low light and needs little care. Perfect for office or bedroom.",
+    "description": "The ZZ Plant is a resilient indoor plant renowned for its waxy, dark green leaves and minimal care requirements. It thrives in low-light conditions and requires infrequent watering, making it perfect for offices, bedrooms, and low-light corners. Its drought tolerance and slow growth make it a favorite for beginners and busy plant owners. ZZ Plants improve indoor air quality by absorbing pollutants, while their glossy foliage adds elegance to interiors. Propagation is possible through leaf cuttings or division of rhizomes. They adapt well to different décor styles, from modern minimalist to traditional, and are nearly pest-free. With minimal effort, the ZZ Plant remains a striking and functional indoor companion, offering both aesthetic and environmental benefits.",
     "image": "https://assets.eflorist.com/site/32084100/assets/products/PZM_/sku4760119.jpg?1763316122969",
     "providerName": "GreenCorner"
   },
@@ -79,7 +79,7 @@
     "rating": 4.7,
     "availableStock": 7,
     "careLevel": "Medium",
-    "description": "Rubber plant has large shiny leaves and looks very elegant indoors.",
+    "description": "The Rubber Plant is a popular indoor plant with large, glossy leaves that create a striking focal point. It prefers bright, indirect sunlight and well-drained soil, thriving in moderate care conditions. Regular watering is needed to maintain healthy foliage, while occasional fertilization during the growing season encourages growth. The Rubber Plant is excellent for indoor air purification, removing harmful toxins. It can grow tall indoors, making it ideal for corners or decorative plant stands. Propagation is possible through stem cuttings, and pruning helps maintain its shape. Its bold appearance, adaptability, and air-cleaning properties make the Rubber Plant a favorite for both beginners and experienced plant enthusiasts, adding elegance and greenery to indoor spaces.",
     "image": "https://shop-static.arborday.org/media/0004361_ruby-variegated-rubber-tree.jpeg",
     "providerName": "UrbanLeaf"
   },
@@ -91,7 +91,7 @@
     "rating": 4.8,
     "availableStock": 20,
     "careLevel": "Easy",
-    "description": "Pothos is one of the easiest indoor plants to grow and helps clean air.",
+    "description": "Pothos, also known as Devil’s Ivy, is a versatile and low-maintenance indoor plant with trailing vines and heart-shaped leaves. It thrives in low to bright indirect light and requires occasional watering when the soil is dry. Pothos is an excellent air purifier, removing toxins and improving indoor air quality. Its trailing habit makes it ideal for hanging baskets, shelves, or climbing supports. Propagation is simple through stem cuttings, allowing gardeners to expand their collection easily. Pothos adapts well to various interior styles and is nearly pest-free. Its ease of care, aesthetic appeal, and environmental benefits make it a perfect choice for beginners and plant enthusiasts seeking lush greenery indoors.",
     "image": "https://plantersplace.com/wp-content/uploads/2022/02/pothos-scaled.jpeg",
     "providerName": "GrowNest"
   },
@@ -103,7 +103,7 @@
     "rating": 4.6,
     "availableStock": 5,
     "careLevel": "Hard",
-    "description": "A trendy indoor plant with large leaves. Needs bright light and proper care.",
+    "description": "The Fiddle Leaf Fig is a dramatic indoor plant with large, violin-shaped leaves that create a bold statement. It prefers bright, indirect sunlight and well-draining soil, requiring careful watering to avoid root rot. Regular rotation ensures even growth, and occasional fertilization helps maintain health. Fiddle Leaf Figs are suitable for spacious areas, living rooms, or offices, where they act as a focal point. They are moderately challenging to grow, requiring attention to light, water, and humidity. Propagation through stem cuttings is possible, but patience is needed. Its striking appearance, combined with functional air-purifying benefits, makes the Fiddle Leaf Fig a premium decorative plant for enthusiasts seeking both beauty and presence indoors.",
     "image": "https://prickleplants.co.uk/cdn/shop/products/79667283-215e-476a-b78e-d95cb484ebcd.jpg?v=1661164031",
     "providerName": "Leaforia"
   },
@@ -115,7 +115,7 @@
     "rating": 4.5,
     "availableStock": 11,
     "careLevel": "Medium",
-    "description": "Boston fern loves humidity and looks great in hanging baskets.",
+    "description": "The Boston Fern is a lush and elegant indoor plant with delicate, feathery fronds. It thrives in bright indirect light and high humidity, making it perfect for bathrooms, kitchens, or areas with adequate moisture. Regular watering is needed to keep the soil consistently moist, but avoid waterlogging. Fertilization every few weeks during the growing season supports healthy growth. Boston Ferns are effective in improving indoor air quality and adding softness to interiors. They can be displayed in hanging baskets or decorative pots, creating cascading greenery. With proper care, the Boston Fern becomes a long-lasting, vibrant plant, enriching indoor spaces with natural beauty and air-purifying benefits.",
     "image": "https://img.crocdn.co.uk/images/products2/pl/20/00/05/04/pl2000050454_card2_lg.jpg",
     "providerName": "GreenWorld"
   },
@@ -127,7 +127,7 @@
     "rating": 4.7,
     "availableStock": 13,
     "careLevel": "Easy",
-    "description": "Very strong plant that grows in low light and needs little water.",
+    "description": "Chinese Evergreen is a durable indoor plant with variegated leaves and a graceful growth habit. It thrives in low to medium indirect light and tolerates low humidity, making it ideal for offices and bedrooms. Water when the topsoil is dry, and occasional fertilization helps maintain health. Chinese Evergreen improves indoor air quality by filtering toxins and contributes to a calming environment. Its aesthetic appeal, ease of care, and adaptability make it a popular choice for both beginners and experienced plant enthusiasts. Propagation is possible through division or stem cuttings. It grows well in decorative pots, adding elegance and greenery to interiors.",
     "image": "https://www.whiteflowerfarm.com/mas_assets/cache/image/a/6/f/b/42747.Jpg",
     "providerName": "NatureNest"
   },
@@ -139,7 +139,7 @@
     "rating": 4.6,
     "availableStock": 8,
     "careLevel": "Medium",
-    "description": "Calathea has beautiful patterned leaves and needs humidity.",
+    "description": "Calathea is an ornamental indoor plant with vibrant, patterned leaves that fold at night. It prefers bright indirect light and high humidity. Soil should be kept consistently moist but not soggy. Calathea benefits from occasional fertilization and thrives in stable indoor conditions. Its unique foliage and decorative appeal make it a striking addition to homes or offices. Regular care ensures vibrant colors and leaf health. Propagation can be done through division of roots. Calathea enhances indoor air quality and adds a tropical feel to interiors, making it a perfect choice for plant lovers seeking beauty and functionality.",
     "image": "https://r2.be.green/large/668fa5f13a336333169766.jpg",
     "providerName": "Plantique Garden"
   },
@@ -151,7 +151,7 @@
     "rating": 4.7,
     "availableStock": 9,
     "careLevel": "Easy",
-    "description": "Dracaena removes toxins from air and looks modern indoors.",
+    "description": "Dracaena is a popular indoor plant with elegant, upright growth and attractive foliage. It thrives in bright indirect light but tolerates low-light areas. Water moderately, letting soil dry between watering sessions. Fertilize occasionally to promote healthy growth. Dracaena helps remove indoor toxins, improving air quality and adding a fresh aesthetic to living spaces. Its low maintenance and sleek appearance make it ideal for homes and offices. Propagation through stem cuttings allows gardeners to grow new plants. With proper care, Dracaena becomes a long-lasting indoor companion, providing both greenery and environmental benefits.",
     "image": "https://www.gabriellaplants.com/cdn/shop/files/gabriella-plants-dracaena-reflexa-song-of-india-4-41760442843381.jpg?v=1726703904&width=1080",
     "providerName": "UrbanGreen Studio"
   },
@@ -163,7 +163,7 @@
     "rating": 4.8,
     "availableStock": 10,
     "careLevel": "Easy",
-    "description": "Small palm perfect for table decoration and indoor corners.",
+    "description": "The Parlor Palm is a compact and graceful indoor plant with feathery fronds. It prefers bright indirect light but adapts to low-light spaces, making it perfect for apartments and offices. Soil should be kept lightly moist, and occasional fertilization helps maintain growth. Parlor Palm improves indoor air quality and adds elegance to interior spaces. Its small size makes it ideal for tabletops or corners. Propagation is limited, but regular pruning helps maintain shape. Easy to care for and visually appealing, the Parlor Palm is a classic indoor plant choice for beginners and enthusiasts alike.",
     "image": "https://cdn.shopify.com/s/files/1/1780/8157/products/ParlourPalm-12cm_2df3dc6b-62d1-4dab-aa53-fcfe7f569094.jpg?v=1693915086",
     "providerName": "LeafyLife"
   },
@@ -175,7 +175,7 @@
     "rating": 4.9,
     "availableStock": 25,
     "careLevel": "Easy",
-    "description": "Small succulents that need very little water and look cute.",
+    "description": "Succulent Mix includes a variety of small, low-maintenance plants perfect for indoor décor. They thrive in bright light and require minimal watering, allowing the soil to dry between sessions. These plants improve air quality, bring color and texture, and can be arranged in pots, terrariums, or small containers. Propagation is simple through offsets or leaf cuttings. Succulents are drought-tolerant, resilient, and visually appealing, making them ideal for beginners or for those seeking a versatile indoor garden. Their compact size and diverse shapes allow creative displays, combining aesthetic and functional benefits in indoor spaces.",
     "image": "https://images.thdstatic.com/productImages/649b489d-9955-460c-b791-f8c014672149/svn/smart-planet-succulent-plants-0872538-64_600.jpg",
     "providerName": "GrowNest"
   }
