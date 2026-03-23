@@ -12,7 +12,6 @@ const PlantDetails = () => {
   const { id } = useParams();
 
   const allPlants = useLoaderData();
-  console.log(allPlants, id);
 
   const plantData = allPlants?.find((plant) => plant.plantId == id);
 

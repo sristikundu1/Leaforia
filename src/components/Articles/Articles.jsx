@@ -1,4 +1,5 @@
 import React, { use } from "react";
+import { Link } from "react-router";
 
 const articlesPromises = fetch("/articles.json").then((res) => res.json());
 const Articles = () => {
@@ -34,9 +35,11 @@ const Articles = () => {
             <h3 className="text-2xl font-bold text-primary mb-6 hover:text-secondary">
               {articles[0].title}
             </h3>
-            <button className="btn text-white btn-primary px-10 py-3 hover:bg-opacity-90 transition">
-              Read More
-            </button>
+            <Link to={`/article/${articles[0].id}`}>
+              <button className="btn text-white btn-primary px-10 py-3 hover:bg-opacity-90 transition">
+                Read More
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -62,9 +65,11 @@ const Articles = () => {
                 <h3 className="text-2xl font-bold text-primary mb-4 leading-tight hover:text-secondary">
                   {article.title}
                 </h3>
-                <button className="btn btn-primary px-10 text-white  py-2 text-sm self-start">
-                  Read More
-                </button>
+                <Link to={`/article/${article.id}`}>
+                  <button className="btn btn-primary px-10 text-white  py-2 text-sm self-start">
+                    Read More
+                  </button>
+                </Link>
               </div>
             </div>
           ))}

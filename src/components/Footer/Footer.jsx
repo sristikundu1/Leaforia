@@ -18,12 +18,7 @@ const Footer = () => {
           >
             About us
           </NavLink>
-          <NavLink
-            to={"/contact"}
-            className={"font-poppins text-primary text-lg font-bold pb-1"}
-          >
-            Contact
-          </NavLink>
+
           <NavLink
             to={"/plants"}
             className={"font-poppins  text-primary text-lg font-bold pb-1"}
