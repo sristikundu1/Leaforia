@@ -78,11 +78,13 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end gap-8">
-          <div className="dropdown dropdown-end">
-            <div tabIndex={0}>
-              <button className="btn bg-primary text-white px-6">login</button>
-            </div>
-          </div>
+          <NavLink
+            to={"/auth/login"}
+            className="btn bg-primary text-white px-6"
+          >
+            login
+          </NavLink>
+
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
