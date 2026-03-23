@@ -10,9 +10,10 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { loginUser, setUser } = use(AuthContext);
+  const { loginUser, setUser, googleLogin } = use(AuthContext);
 
   const [error, setError] = useState("");
+
   const handleLogin = (e) => {
     e.preventDefault();
 
@@ -34,14 +35,38 @@ const Login = () => {
         });
 
         navigate(`${location.state ? location.state : "/"}`);
+        // reset form
+        e.target.reset();
+
         setUser(user);
       })
       .catch((error) => {
         setError(error);
       });
+  };
 
-    // reset form
-    e.target.reset();
+  //   google login
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        result.user;
+
+        navigate(`${location.state ? location.state : "/"}`);
+
+        // show alert
+        toast.success("Thank you, You successfully Login", {
+          icon: "🎉",
+          style: {
+            borderRadius: "10px",
+            background: "#034e3b",
+            color: "#fff",
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error);
+      });
   };
 
   return (
@@ -92,10 +117,20 @@ const Login = () => {
             </p>
           </div>
 
+          {/* show error  */}
+          <div className="text-center mt-4">
+            {error && (
+              <p className="text-red-800 font-semibold text-sm">{error}</p>
+            )}
+          </div>
+
           <div className="divider my-10 w-1/2 mx-auto">OR</div>
 
           {/* Google */}
-          <button className="btn bg-transparent border-2 text-primary border-primary">
+          <button
+            onClick={handleGoogleLogin}
+            className="btn bg-transparent border-2 text-primary border-primary"
+          >
             <FcGoogle className="text-xl" />
             Login with Google
           </button>

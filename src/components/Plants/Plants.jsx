@@ -1,16 +1,19 @@
 import React, { Suspense, use, useState } from "react";
 import PlantCard from "../PlantCard/PlantCard";
+import { Link } from "react-router";
 
 const plantPromises = fetch("/plants.json").then((res) => res.json());
 const Plants = () => {
   const allPlants = use(plantPromises);
 
+  const homePlants = allPlants.slice(0, 6);
+
   // 1. Create a state to track if we should show everything
-  const [showAll, setShowAll] = useState(false);
+  // const [showAll, setShowAll] = useState(false);
 
   // 2. Decide which plants to display based on the state
   // If showAll is false, we only take the first 6
-  const visiblePlants = showAll ? allPlants : allPlants.slice(0, 6);
+  // const visiblePlants = showAll ? allPlants : allPlants.slice(0, 6);
   return (
     <div className="max-w-10/12 mx-auto my-20">
       <div className="text-center">
@@ -29,15 +32,21 @@ const Plants = () => {
           }
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 ">
-            {visiblePlants.map((plants) => (
+            {homePlants.map((plants) => (
               <PlantCard key={plants.plantId} plants={plants}></PlantCard>
             ))}
           </div>
         </Suspense>
 
+        <div className="flex justify-center mt-8">
+          <Link to={"/plants"}>
+            <button className="btn btn-primary px-10">Show All Plants</button>
+          </Link>
+        </div>
+
         {/* 3. Only show the button if there are more than 6 plants 
           AND we haven't clicked "Show All" yet */}
-        {!showAll && allPlants.length > 6 && (
+        {/* {!showAll && allPlants.length > 6 && (
           <div className="flex justify-center mt-8">
             <button
               onClick={() => setShowAll(true)}
@@ -46,7 +55,7 @@ const Plants = () => {
               Show All Plants
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

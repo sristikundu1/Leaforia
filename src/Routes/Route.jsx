@@ -5,6 +5,10 @@ import PlantDetails from "../pages/PlantDetails/PlantDetails";
 import Login from "../pages/Login/Login";
 import AuthLayout from "../layouts/AuthLayout";
 import Register from "../pages/Register/Register";
+import PrivateRoute from "../contexts/PrivateRoute";
+import Loading from "../components/Loading/Loading";
+import Profile from "../pages/Profile/Profile";
+import Plants from "../pages/Plants/Plants";
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +22,12 @@ export const router = createBrowserRouter([
       {
         path: "/plant/:id",
         loader: () => fetch("/plants.json"),
-        element: <PlantDetails></PlantDetails>,
+        element: (
+          <PrivateRoute>
+            <PlantDetails></PlantDetails>
+          </PrivateRoute>
+        ),
+        hydrateFallbackElement: <Loading />,
       },
     ],
   },
@@ -35,5 +44,19 @@ export const router = createBrowserRouter([
         element: <Register></Register>,
       },
     ],
+  },
+  {
+    path: "/profile",
+    element: (
+      <PrivateRoute>
+        <Profile></Profile>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/plants",
+    loader: () => fetch("/plants.json"),
+    element: <Plants></Plants>,
+    hydrateFallbackElement: <Loading />,
   },
 ]);

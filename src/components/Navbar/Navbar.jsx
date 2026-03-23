@@ -57,6 +57,7 @@ const Navbar = () => {
         toast.error(error);
       });
   };
+
   return (
     <div className="sticky top-0 z-50 bg-base-100/80 backdrop-blur-md">
       <div className="navbar bg-transparent shadow-[0_8px_30px_rgb(0,0,0,0.04)] max-w-10/12 mx-auto">

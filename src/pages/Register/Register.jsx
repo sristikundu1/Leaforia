@@ -10,7 +10,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 const Register = () => {
   const navigate = useNavigate();
 
-  const { registerUser, updateUser } = use(AuthContext);
+  const { registerUser, setUser, updateUser, googleLogin } = use(AuthContext);
 
   const [error, setError] = useState("");
 
@@ -49,8 +49,7 @@ const Register = () => {
             });
           })
           .catch((error) => {
-            toast.error(error);
-            setUser(user);
+            setError(error);
           });
       })
       .catch((error) => {
@@ -58,6 +57,29 @@ const Register = () => {
         const errorMessage = error.message;
         // setError(errorMessage)
         toast.error(errorMessage);
+      });
+  };
+
+  //   google login
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        result.user;
+
+        navigate("/");
+
+        // show alert
+        toast.success("Thank you, You successfully Login", {
+          icon: "🎉",
+          style: {
+            borderRadius: "10px",
+            background: "#034e3b",
+            color: "#fff",
+          },
+        });
+      })
+      .catch((error) => {
+        setError(error);
       });
   };
 
@@ -116,10 +138,20 @@ const Register = () => {
             </p>
           </div>
 
+          {/* show error  */}
+          <div className="text-center mt-4">
+            {error && (
+              <p className="text-red-800 font-semibold text-sm">{error}</p>
+            )}
+          </div>
+
           <div className="divider my-10 w-1/2 mx-auto">OR</div>
 
           {/* Google */}
-          <button className="btn bg-transparent border-2 text-primary border-primary">
+          <button
+            onClick={handleGoogleLogin}
+            className="btn bg-transparent border-2 text-primary border-primary"
+          >
             <FcGoogle className="text-xl" />
             Login with Google
           </button>
