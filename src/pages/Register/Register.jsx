@@ -1,11 +1,66 @@
-import React from "react";
+import React, { use, useState } from "react";
+import toast from "react-hot-toast";
 import { FaRegUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FiUnlock } from "react-icons/fi";
 import { MdAttachFile, MdOutlineEmail } from "react-icons/md";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const { registerUser, updateUser } = use(AuthContext);
+
+  const [error, setError] = useState("");
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const photo = e.target.photo.value;
+    const password = e.target.password.value;
+
+    registerUser(email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        updateUser({
+          ...user,
+          displayName: name,
+          photoURL: photo,
+        })
+          .then(() => {
+            setUser({ ...user, displayName: name, photoURL: photo });
+            navigate("/");
+
+            // reset form
+            e.target.reset();
+
+            // show alert
+            toast.success("Wow, You successfully Register in this site", {
+              icon: "🌳",
+              style: {
+                borderRadius: "10px",
+                background: "#034e3b",
+                color: "#fff",
+              },
+            });
+          })
+          .catch((error) => {
+            toast.error(error);
+            setUser(user);
+          });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // setError(errorMessage)
+        toast.error(errorMessage);
+      });
+  };
+
   return (
     <div className="max-w-10/12 mx-auto">
       <div className=" text-center my-10">
@@ -17,7 +72,7 @@ const Register = () => {
 
       <div>
         <div className="shrink-0  flex flex-col justify-center items-center pb-10">
-          <form className="fieldset gap-5">
+          <form onSubmit={handleRegister} className="fieldset gap-5">
             {/* name  */}
             <label className="input validator w-[450px]">
               <FaRegUser />

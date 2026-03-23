@@ -1,10 +1,49 @@
-import React from "react";
+import React, { use, useState } from "react";
+import toast from "react-hot-toast/headless";
 import { FcGoogle } from "react-icons/fc";
 import { FiUnlock } from "react-icons/fi";
 import { MdOutlineEmail } from "react-icons/md";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Login = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { loginUser, setUser } = use(AuthContext);
+
+  const [error, setError] = useState("");
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    loginUser(email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        // show alert
+        toast.success("Thank you, You successfully Login", {
+          icon: "🎉",
+          style: {
+            borderRadius: "10px",
+            background: "#034e3b",
+            color: "#fff",
+          },
+        });
+
+        navigate(`${location.state ? location.state : "/"}`);
+        setUser(user);
+      })
+      .catch((error) => {
+        setError(error);
+      });
+
+    // reset form
+    e.target.reset();
+  };
+
   return (
     <div className="max-w-10/12 mx-auto">
       <div className=" text-center my-10">
@@ -17,7 +56,7 @@ const Login = () => {
 
       <div>
         <div className="shrink-0  flex flex-col justify-center items-center pb-10">
-          <form className="fieldset gap-5">
+          <form onSubmit={handleLogin} className="fieldset gap-5">
             {/* email  */}
             <label className="input validator w-[450px]">
               <MdOutlineEmail />
