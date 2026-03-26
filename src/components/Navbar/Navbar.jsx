@@ -60,11 +60,11 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-50 bg-base-100/80 backdrop-blur-md">
-      <div className="navbar bg-transparent shadow-[0_8px_30px_rgb(0,0,0,0.04)] max-w-10/12 mx-auto">
+      <div className="navbar bg-transparent shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 md:max-w-10/12 mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <RiMenu2Line />
+            <div tabIndex={0} role="button" className="lg:hidden">
+              <RiMenu2Line className="text-2xl mr-5" />
             </div>
             <ul
               tabIndex="-1"

@@ -24,15 +24,15 @@ const Banner = () => {
       <SlickSlider {...settings}>
         <div>
           <div
-            className="hero min-h-screen"
+            className="hero min-h-screen items-start"
             style={{
               backgroundImage: `url(${banner1})`,
             }}
           >
             <div className="hero-overlay bg-slate-900/20"></div>
-            <div className=" hero-content text-center">
-              <div className="max-w-8/12">
-                <h1 className="mb-5 text-5xl font-bold text-primary">
+            <div className=" hero-content text-center pt-20">
+              <div className="md:max-w-8/12">
+                <h1 className="mb-5 text-3xl md:text-5xl font-bold text-primary">
                   Bring Nature Inside Your Home
                 </h1>
                 <p className="mb-5 text-white text-lg">
@@ -55,8 +55,8 @@ const Banner = () => {
           >
             <div className="hero-overlay bg-slate-900/20"></div>
             <div className=" hero-content text-left">
-              <div className="max-w-11/12">
-                <h1 className="mb-5 text-5xl font-bold text-primary">
+              <div className="md:max-w-11/12">
+                <h1 className="mb-5 text-3xl md:text-5xl font-bold text-primary">
                   Premium Indoor Plants <br /> for Every Corner
                 </h1>
                 <p className="mb-5 text-white text-lg">

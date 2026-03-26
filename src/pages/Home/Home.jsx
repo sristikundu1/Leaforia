@@ -4,11 +4,13 @@ import Plants from "../../components/Plants/Plants";
 import PlantCare from "../../components/PlantCare/PlantCare";
 import Experts from "../../components/Experts/Experts";
 import Articles from "../../components/Articles/Articles";
+import WeeksPlant from "../../components/WeeksPlant/WeeksPlant";
 
 const Home = () => {
   return (
     <div>
       <Banner></Banner>
+      <WeeksPlant></WeeksPlant>
       <Plants></Plants>
       <PlantCare></PlantCare>
       <Experts></Experts>

@@ -26,8 +26,8 @@ const Consultation = () => {
     e.target.reset();
   };
   return (
-    <div className="grid grid-cols-12 gap-6 my-24">
-      <div className="col-span-7">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 my-24">
+      <div className="md:col-span-7">
         <div className="text-center mb-10">
           <h1 className="font-bold text-4xl text-primary mb-3">
             Book a Consultation
@@ -79,7 +79,7 @@ const Consultation = () => {
           </div>
         </div>
       </div>
-      <div className="col-span-5">
+      <div className="md:col-span-5">
         <img
           className="w-full h-full object-cover rounded-xl shadow-2xl"
           src="https://i.ibb.co.com/JWkXtnqj/portrait-beautiful-female-gardener-standing-greenhouse.jpg"

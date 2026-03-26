@@ -6,6 +6,8 @@ import { FiUnlock } from "react-icons/fi";
 import { MdAttachFile, MdOutlineEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../contexts/AuthContext";
+import { IoEyeOutline } from "react-icons/io5";
+import { VscEyeClosed } from "react-icons/vsc";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const Register = () => {
   const { registerUser, setUser, updateUser, googleLogin } = use(AuthContext);
 
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -96,32 +99,36 @@ const Register = () => {
         <div className="shrink-0  flex flex-col justify-center items-center pb-10">
           <form onSubmit={handleRegister} className="fieldset gap-5">
             {/* name  */}
-            <label className="input validator w-[450px]">
+            <label className="input validator w-96 md:w-[450px]">
               <FaRegUser />
               <input type="text" name="name" required placeholder="Username" />
             </label>
 
             {/* email  */}
-            <label className="input validator w-[450px]">
+            <label className="input validator w-96 md:w-[450px]">
               <MdOutlineEmail />
               <input type="email" name="email" required placeholder="Email" />
             </label>
 
             {/* photo  */}
-            <label className="input validator w-[450px]">
+            <label className="input validator w-96 md:w-[450px]">
               <MdAttachFile />
               <input type="text" name="photo" required placeholder="PhotoURL" />
             </label>
 
             {/* Password  */}
-            <label className="input validator w-[450px]">
+            <label className="input validator w-96 md:w-[450px]">
               <FiUnlock />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 required
                 placeholder="password"
               />
+
+              <span onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <IoEyeOutline /> : <VscEyeClosed />}
+              </span>
             </label>
 
             <button type="submit" className="btn btn-primary mt-4">

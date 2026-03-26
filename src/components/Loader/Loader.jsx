@@ -1,14 +1,13 @@
-// import Lottie from "lottie-react";
+import Lottie from "lottie-react";
 import React from "react";
-// import loadingAnimation from "../../assets/loading.json";
-import gifimage from "../../assets/plant.gif";
+import loadingAnimation from "../../assets/loading.json";
+
 const Loader = () => {
-  //   const animationData = loadingAnimation?.default || loadingAnimation;
+  const LottieComponent = Lottie.default || Lottie;
   return (
     <div className="min-h-screen flex justify-center items-center">
-      <div className="w-40">
-        <img src={gifimage} alt="" />
-        {/* <Lottie animationData={animationData} loop={true} /> */}
+      <div className="w-96">
+        <LottieComponent animationData={loadingAnimation} loop={true} />
       </div>
     </div>
   );

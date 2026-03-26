@@ -26,9 +26,14 @@ const Plants = () => {
       <div className="max-w-10/12 mx-auto my-16">
         <Tabs>
           {/* Tabs button */}
-          <TabList className="flex gap-3 justify-center mb-4 ">
+          <TabList className="flex gap-3 justify-start md:justify-center mb-6 overflow-x-auto no-scrollbar pb-2 scroll-smooth">
             {categories.map((cat, index) => (
-              <Tab key={index}>{cat}</Tab>
+              <Tab
+                key={index}
+                className="shrink-0 whitespace-nowrap px-6 py-2 rounded-full border border-gray-200 bg-white hover:bg-primary hover:text-white transition-all cursor-pointer text-sm font-medium"
+              >
+                {cat}
+              </Tab>
             ))}
           </TabList>
 

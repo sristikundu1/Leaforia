@@ -51,27 +51,41 @@ const PlantDetails = () => {
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 1,
+    initialSlide: 0,
     swipeToSlide: true,
+    mobileFirst: false,
     speed: 500,
     arrows: true,
     responsive: [
       {
+        breakpoint: 1280, // Extra large desktops
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+        },
+      },
+      {
         breakpoint: 1024,
-        settings: { slidesToShow: 3 },
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
       },
       {
         breakpoint: 768,
-        settings: { slidesToShow: 2 },
+        settings: { slidesToShow: 2, slidesToScroll: 2, initialSlide: 2 },
       },
       {
         breakpoint: 640,
-        settings: { slidesToShow: 1 },
+        settings: { slidesToShow: 1, slidesToScroll: 1 },
       },
     ],
   };
 
   return (
-    <div className="max-w-10/12 mx-auto my-20">
+    <div className="px-5 md:px-0 md:max-w-10/12 mx-auto my-20">
       <div className="grid grid-cols-1 md:grid-cols-10 gap-6">
         <div className="col-span-1 md:col-span-5">
           <img className="h-auto" src={image} alt="plant" />
@@ -123,21 +137,23 @@ const PlantDetails = () => {
           </p>
 
           <p className="font-bold text-lg my-2">
-            Care: <span className="pl-20 text-[#716F6B]">{careLevel}</span>{" "}
+            Care: <span className="pl-20 text-[#716F6B]">{careLevel}</span>
           </p>
 
           <div className="flex justify-between items-center my-12">
             <div className="flex items-center  rounded-lg border-2 border-primary gap-3">
               <button
                 onClick={handleDecrease}
-                className="bg-primary text-white px-6 py-3 text-lg hover:bg-secondary"
+                className="bg-primary text-white px-2 md:px-6 py-3 text-lg hover:bg-secondary"
               >
                 -
               </button>
-              <span className="text-lg font-bold px-6 py-3">{quantity}</span>
+              <span className="text-lg font-bold  md:px-6 py-3">
+                {quantity}
+              </span>
               <button
                 onClick={handleIncrease}
-                className="bg-primary text-white px-6 py-3 text-lg  hover:bg-secondary"
+                className="bg-primary text-white px-2 md:px-6 py-3 text-lg  hover:bg-secondary"
               >
                 +
               </button>
@@ -167,10 +183,10 @@ const PlantDetails = () => {
             Related Products
           </h2>
 
-          <div className="mt-10">
+          <div className="mt-10 ">
             <SlickSlider {...settings}>
               {relatedPlant.map((plant) => (
-                <div key={plant.plantId} className="px-2 py-4">
+                <div key={plant.plantId} className="px-2 py-4 ">
                   <PlantCard plants={plant} />
                 </div>
               ))}

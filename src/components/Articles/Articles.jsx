@@ -66,7 +66,7 @@ const Articles = () => {
                   {article.title}
                 </h3>
                 <Link to={`/article/${article.id}`}>
-                  <button className="btn btn-primary px-10 text-white  py-2 text-sm self-start">
+                  <button className="btn btn-primary md:px-10 text-white  py-2 text-sm self-start">
                     Read More
                   </button>
                 </Link>

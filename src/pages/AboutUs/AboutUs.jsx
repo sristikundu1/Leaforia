@@ -24,7 +24,7 @@ const AboutUs = () => {
         </div>
 
         {/* Sections */}
-        <div className="max-w-6xl mx-auto py-16 space-y-16">
+        <div className="px-5 md:px-0 md:max-w-6xl mx-auto py-16 space-y-16">
           {/* 1st Div - Image Left, Text Right */}
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2">

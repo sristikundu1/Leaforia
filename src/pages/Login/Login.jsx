@@ -5,6 +5,8 @@ import { FiUnlock } from "react-icons/fi";
 import { MdOutlineEmail } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../contexts/AuthContext";
+import { IoEyeOutline } from "react-icons/io5";
+import { VscEyeClosed } from "react-icons/vsc";
 
 const Login = () => {
   const location = useLocation();
@@ -13,6 +15,7 @@ const Login = () => {
   const { loginUser, setUser, googleLogin } = use(AuthContext);
 
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -83,20 +86,24 @@ const Login = () => {
         <div className="shrink-0  flex flex-col justify-center items-center pb-10">
           <form onSubmit={handleLogin} className="fieldset gap-5">
             {/* email  */}
-            <label className="input validator w-[450px]">
+            <label className="input validator w-96 md:w-[450px]">
               <MdOutlineEmail />
               <input type="email" name="email" required placeholder="Email" />
             </label>
 
             {/* Password  */}
-            <label className="input validator w-[450px]">
+            <label className="input validator  w-96  md:w-[450px]">
               <FiUnlock />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 required
                 placeholder="password"
               />
+
+              <span onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <IoEyeOutline /> : <VscEyeClosed />}
+              </span>
             </label>
 
             <button type="submit" className="btn btn-primary mt-4">
@@ -104,7 +111,7 @@ const Login = () => {
             </button>
           </form>
 
-          <div className="flex justify-between items-center gap-14 mt-4">
+          <div className="flex flex-col gap-6 md:flex-row justify-between items-center md:gap-14 mt-4">
             <p className="font-medium text-sm text-secondary ">
               Don't have an account?
               <Link to={"/auth/register"}>

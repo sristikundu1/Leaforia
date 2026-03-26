@@ -8,12 +8,6 @@ const Plants = () => {
 
   const homePlants = allPlants.slice(0, 6);
 
-  // 1. Create a state to track if we should show everything
-  // const [showAll, setShowAll] = useState(false);
-
-  // 2. Decide which plants to display based on the state
-  // If showAll is false, we only take the first 6
-  // const visiblePlants = showAll ? allPlants : allPlants.slice(0, 6);
   return (
     <div className="max-w-10/12 mx-auto my-20">
       <div className="text-center">
