@@ -9,6 +9,7 @@ import Newsletter from "./NewsLetter/Newsletter";
 import Reviews from "./Reviews/Reviews";
 
 const Home = () => {
+  console.log("Home loaded");
   return (
     <div>
       <Banner></Banner>

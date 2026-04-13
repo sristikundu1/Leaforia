@@ -2,15 +2,17 @@ import { createBrowserRouter } from "react-router";
 import HomeLayout from "./../layouts/HomeLayout";
 import Home from "../pages/Home/Home";
 import PlantDetails from "../pages/PlantDetails/PlantDetails";
-import Login from "../pages/Login/Login";
 import AuthLayout from "../layouts/AuthLayout";
-import Register from "../pages/Register/Register";
 import PrivateRoute from "../contexts/PrivateRoute";
 import Loading from "../components/Loading/Loading";
 import Profile from "../pages/Profile/Profile";
 import Plants from "../pages/Plants/Plants";
 import ArticleDetails from "../pages/ArticleDetails/ArticleDetails";
 import AboutUs from "../pages/AboutUs/AboutUs";
+import Register from "../pages/Auth/Register/Register";
+import Login from "../pages/Auth/Login/Login";
+import DashboardLayout from "../layouts/DashboardLayout";
+import AddPlant from "../pages/Dashboard/AddPlant/AddPlant";
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +20,7 @@ export const router = createBrowserRouter([
     element: <HomeLayout></HomeLayout>,
     children: [
       {
-        path: "/",
+        index: true,
         element: <Home></Home>,
       },
       {
@@ -42,6 +44,10 @@ export const router = createBrowserRouter([
         ),
         hydrateFallbackElement: <Loading />,
       },
+      {
+        path: "/about",
+        element: <AboutUs></AboutUs>,
+      },
     ],
   },
   {
@@ -50,22 +56,15 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/auth/login",
-        element: <Login></Login>,
+        element: <Login />,
       },
       {
         path: "/auth/register",
-        element: <Register></Register>,
+        element: <Register />,
       },
     ],
   },
-  {
-    path: "/profile",
-    element: (
-      <PrivateRoute>
-        <Profile></Profile>
-      </PrivateRoute>
-    ),
-  },
+
   {
     path: "/plants",
     loader: () => fetch("/plants.json"),
@@ -73,7 +72,21 @@ export const router = createBrowserRouter([
     hydrateFallbackElement: <Loading />,
   },
   {
-    path: "/about",
-    element: <AboutUs></AboutUs>,
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "add-plants",
+        element: <AddPlant></AddPlant>,
+      },
+      {
+        path: "profile",
+        element: <Profile></Profile>,
+      },
+    ],
   },
 ]);

@@ -4,15 +4,16 @@ import { FcGoogle } from "react-icons/fc";
 import { FiUnlock } from "react-icons/fi";
 import { MdOutlineEmail } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router";
-import { AuthContext } from "../../contexts/AuthContext";
 import { IoEyeOutline } from "react-icons/io5";
 import { VscEyeClosed } from "react-icons/vsc";
+import { AuthContext } from "./../../../contexts/AuthContext";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { loginUser, setUser, googleLogin } = use(AuthContext);
+  const { loginUser, setUser } = use(AuthContext);
 
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -44,30 +45,6 @@ const Login = () => {
         setUser(user);
       })
       .catch((error) => {
-        setError(error);
-      });
-  };
-
-  //   google login
-  const handleGoogleLogin = () => {
-    googleLogin()
-      .then((result) => {
-        result.user;
-
-        navigate(`${location.state ? location.state : "/"}`);
-
-        // show alert
-        toast.success("Thank you, You successfully Login", {
-          icon: "🎉",
-          style: {
-            borderRadius: "10px",
-            background: "#034e3b",
-            color: "#fff",
-          },
-        });
-      })
-      .catch((error) => {
-        console.log(error);
         setError(error);
       });
   };
@@ -134,13 +111,7 @@ const Login = () => {
           <div className="divider my-10 w-1/2 mx-auto">OR</div>
 
           {/* Google */}
-          <button
-            onClick={handleGoogleLogin}
-            className="btn bg-transparent border-2 text-primary border-primary"
-          >
-            <FcGoogle className="text-xl" />
-            Login with Google
-          </button>
+          <SocialLogin></SocialLogin>
         </div>
       </div>
     </div>

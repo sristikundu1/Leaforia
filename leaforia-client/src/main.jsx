@@ -9,8 +9,8 @@ import AuthProvider from "./contexts/AuthProvider.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <Toaster position="top-center" reverseOrder={true} />
       <RouterProvider router={router} />
+      <Toaster position="top-center" reverseOrder={true} />
     </AuthProvider>
   </StrictMode>,
 );

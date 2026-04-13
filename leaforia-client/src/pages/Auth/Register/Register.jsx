@@ -1,89 +1,89 @@
 import React, { use, useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegUser } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { FiUnlock } from "react-icons/fi";
 import { MdAttachFile, MdOutlineEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router";
-import { AuthContext } from "../../contexts/AuthContext";
 import { IoEyeOutline } from "react-icons/io5";
 import { VscEyeClosed } from "react-icons/vsc";
 
+import { AuthContext } from "./../../../contexts/AuthContext";
+import SocialLogin from "../SocialLogin/SocialLogin";
+import useAxiosSecure from "./../../../hooks/useAxiosSecure";
+
 const Register = () => {
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
-  const { registerUser, setUser, updateUser, googleLogin } = use(AuthContext);
+  const { registerUser, setUser, updateUser } = use(AuthContext);
 
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    setError(""); // Clear previous errors
 
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const photo = e.target.photo.value;
-    const password = e.target.password.value;
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const photo = form.photo.value;
+    const password = form.password.value;
 
-    registerUser(email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        updateUser({
-          ...user,
-          displayName: name,
-          photoURL: photo,
-        })
-          .then(() => {
-            setUser({ ...user, displayName: name, photoURL: photo });
-            navigate("/");
+    try {
+      // 1. Create User in Firebase
+      const userCredential = await registerUser(email, password);
+      const user = userCredential.user;
 
-            // reset form
-            e.target.reset();
-
-            // show alert
-            toast.success("Wow, You successfully Register in this site", {
-              icon: "🌳",
-              style: {
-                borderRadius: "10px",
-                background: "#034e3b",
-                color: "#fff",
-              },
-            });
-          })
-          .catch((error) => {
-            setError(error);
-          });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // setError(errorMessage)
-        toast.error(errorMessage);
+      // 2. Update Firebase Profile (Display Name & Photo)
+      await updateUser({
+        displayName: name,
+        photoURL: photo,
       });
-  };
 
-  //   google login
-  const handleGoogleLogin = () => {
-    googleLogin()
-      .then((result) => {
-        result.user;
+      // 3. Prepare data for MongoDB
+      const newUser = {
+        name,
+        email,
+        photo,
+        createdAt: new Date(),
+      };
 
-        navigate("/");
+      // 4. Save to Database
+      const res = await axiosSecure.post("/users", newUser);
 
-        // show alert
-        toast.success("Thank you, You successfully Login", {
-          icon: "🎉",
+      if (res.data.insertedId) {
+        // Sync local state with the new profile info
+        setUser({ ...user, displayName: name, photoURL: photo });
+
+        toast.success("Registration Successful 🌿", {
+          icon: "🌱",
           style: {
             borderRadius: "10px",
             background: "#034e3b",
             color: "#fff",
           },
         });
-      })
-      .catch((error) => {
-        setError(error);
-      });
+
+        form.reset();
+        navigate("/");
+      } else {
+        // handle existing user
+        toast("User already exists, please login 🌱");
+        navigate("/auth/login");
+      }
+    } catch (error) {
+      console.error("Registration Error:", error);
+      const errorMessage = error.message;
+
+      // Friendly Firebase error formatting
+      if (errorMessage.includes("auth/email-already-in-use")) {
+        toast.error("This email is already registered.");
+      } else {
+        toast.error(errorMessage);
+      }
+      setError(errorMessage);
+    }
   };
 
   return (
@@ -155,13 +155,7 @@ const Register = () => {
           <div className="divider my-10 w-1/2 mx-auto">OR</div>
 
           {/* Google */}
-          <button
-            onClick={handleGoogleLogin}
-            className="btn bg-transparent border-2 text-primary border-primary"
-          >
-            <FcGoogle className="text-xl" />
-            Login with Google
-          </button>
+          <SocialLogin></SocialLogin>
         </div>
       </div>
     </div>

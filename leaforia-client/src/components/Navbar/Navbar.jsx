@@ -52,6 +52,14 @@ const Navbar = () => {
       <NavLink to="/profile" className={navClass}>
         Profile
       </NavLink>
+
+      {user && (
+        <>
+          <NavLink to="/dashboard" className={navClass}>
+            Dashboard
+          </NavLink>
+        </>
+      )}
     </>
   );
 
