@@ -11,14 +11,10 @@
   --color-secondary: #718355;
   --color-accent: #0b1a13;
   --color-base-100: #fffff0;
-
-  /* Font Family Definitions */
-  /* --font-montserrat: "Montserrat", sans-serif;
-  --font-lato: "Lato", sans-serif;
-  --font-poppins: "Poppins", sans-serif; */
 }
 
 /* Apply specific fonts to elements globally */
+
 h1,
 h2,
 h3,
@@ -26,7 +22,8 @@ h4,
 h5,
 h6 {
   font-family: "Montserrat", sans-serif;
-  letter-spacing: -0.02em; /* Makes Montserrat look more "elegant" */
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 body {
@@ -34,9 +31,10 @@ body {
 }
 
 /* Force DaisyUI buttons to use Poppins */
+
 .btn {
   font-family: "Poppins", sans-serif;
-  text-transform: uppercase; /* Common for Poppins UI buttons */
+  text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
