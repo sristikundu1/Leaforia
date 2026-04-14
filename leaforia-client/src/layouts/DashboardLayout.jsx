@@ -1,12 +1,13 @@
 import React, { use } from "react";
 import { Link, Outlet } from "react-router";
 import useRole from "../hooks/useRole";
-import { PiPottedPlantDuotone } from "react-icons/pi";
+import { PiPottedPlantDuotone, PiUsersThreeBold } from "react-icons/pi";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { AuthContext } from "../contexts/AuthContext";
 import logo from "../assets/fav_icon.png";
 import toast from "react-hot-toast";
 import { BiLogOutCircle } from "react-icons/bi";
+import { GiPlantRoots } from "react-icons/gi";
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -120,19 +121,54 @@ const DashboardLayout = () => {
 
             {/* ADMIN ONLY */}
             {role === "admin" && (
-              <li>
-                <Link
-                  to="/dashboard/add-plants"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Add Plant"
-                >
-                  <PiPottedPlantDuotone size={20} className="text-primary" />
-                  <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
-                    Add Plant
-                  </span>
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/add-plants"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Add Plant"
+                  >
+                    <PiPottedPlantDuotone size={20} className="text-primary" />
+                    <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
+                      Add Plant
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/all-plants"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="All Plants"
+                  >
+                    <GiPlantRoots size={20} className="text-primary" />
+                    <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
+                      All Plants
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/user-management"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="User Management"
+                  >
+                    <PiUsersThreeBold size={20} className="text-primary" />
+                    <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
+                      User Management
+                    </span>
+                  </Link>
+                </li>
+              </>
             )}
+          </ul>
+
+          {/*  BOTTOM SECTION */}
+          <ul className="menu w-full">
+            <li>
+              <span className="is-drawer-close:hidden text-primary">
+                SETTINGS
+              </span>
+            </li>
 
             {/* PROFILE */}
             <li>
@@ -146,15 +182,6 @@ const DashboardLayout = () => {
                   Profile
                 </span>
               </Link>
-            </li>
-          </ul>
-
-          {/*  BOTTOM SECTION */}
-          <ul className="menu w-full">
-            <li>
-              <span className="is-drawer-close:hidden text-primary">
-                SETTINGS
-              </span>
             </li>
 
             <li>

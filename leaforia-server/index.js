@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const cors = require("cors");
 
@@ -35,6 +35,12 @@ async function run() {
     const userCollection = client.db("LeaforiaDB").collection("users");
 
     // user related API
+
+    // get all user
+    app.get("/users", async (req, res) => {
+      const result = await userCollection.find().toArray();
+      res.send(result);
+    });
 
     // get the user role from database
     app.get("/users/:email/role", async (req, res) => {
@@ -77,6 +83,28 @@ async function run() {
     app.post("/plants", async (req, res) => {
       const plants = req.body;
       const result = await plantCollection.insertOne(plants);
+      res.send(result);
+    });
+
+    // edit plant data from database
+    app.patch("/plants/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updatedPlant = req.body;
+      const updatedDoc = {
+        $set: updatedPlant,
+      };
+
+      const result = await plantCollection.updateOne(filter, updatedDoc);
+      res.send(result);
+    });
+
+    // delete plant from database
+    app.delete("/plants/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+
+      const result = await plantCollection.deleteOne(query);
       res.send(result);
     });
 

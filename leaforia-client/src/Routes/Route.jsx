@@ -13,6 +13,9 @@ import Register from "../pages/Auth/Register/Register";
 import Login from "../pages/Auth/Login/Login";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AddPlant from "../pages/Dashboard/AddPlant/AddPlant";
+import AllPlants from "../pages/Dashboard/AllPlants/AllPlants";
+import UpdatePlant from "./../pages/Dashboard/UpdatePlant/UpdatePlant";
+import UserManagement from "../pages/Dashboard/UserManagement/UserManagement";
 
 export const router = createBrowserRouter([
   {
@@ -82,6 +85,18 @@ export const router = createBrowserRouter([
       {
         path: "add-plants",
         element: <AddPlant></AddPlant>,
+      },
+      {
+        path: "all-plants",
+        element: <AllPlants></AllPlants>,
+      },
+      {
+        path: "edit-plant/:id",
+        element: <UpdatePlant></UpdatePlant>,
+      },
+      {
+        path: "user-management",
+        element: <UserManagement></UserManagement>,
       },
       {
         path: "profile",
