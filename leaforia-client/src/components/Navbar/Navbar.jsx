@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLocation } from "react-router";
 import logo from "../../assets/Logo.png";
 import { AuthContext } from "../../contexts/AuthContext";
 import { RiMenu2Line } from "react-icons/ri";
@@ -10,7 +10,8 @@ import toast from "react-hot-toast";
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const [isScrolled, setIsScrolled] = useState(false);
-
+  const location = useLocation();
+  const isHome = location.pathname === "/";
   // detect scroll
   useEffect(() => {
     const handleScroll = () => {
@@ -33,10 +34,15 @@ const Navbar = () => {
     `px-3 py-1 transition-all duration-200 ${
       isActive
         ? "text-primary border-b-2 border-primary"
-        : isScrolled
-          ? "text-gray-700 hover:text-primary"
-          : "text-white hover:text-primary"
+        : "text-white hover:text-primary"
     }`;
+
+  //  const navClass = ({ isActive }) =>
+  // `px-3 py-1 transition-all duration-200 ${
+  //   isActive
+  //     ? "text-primary border-b-2 border-primary"
+  //     : "text-gray-700 hover:text-primary"
+  // }`;
 
   const links = (
     <>
@@ -66,9 +72,11 @@ const Navbar = () => {
   return (
     <div
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/70 text-gray-700 backdrop-blur-md shadow-md"
-          : "bg-transparent"
+        isHome
+          ? isScrolled
+            ? "bg-white/70 text-gray-700 backdrop-blur-md shadow-md"
+            : "bg-transparent"
+          : "bg-[#688B58]/80 text-gray-700 shadow-md"
       }`}
     >
       <div className="navbar max-w-7xl mx-auto px-4">

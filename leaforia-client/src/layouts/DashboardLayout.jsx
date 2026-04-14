@@ -2,12 +2,18 @@ import React, { use } from "react";
 import { Link, Outlet } from "react-router";
 import useRole from "../hooks/useRole";
 import { PiPottedPlantDuotone, PiUsersThreeBold } from "react-icons/pi";
-import { HiOutlineUserCircle } from "react-icons/hi";
+import {
+  HiOutlineReceiptRefund,
+  HiOutlineShoppingBag,
+  HiOutlineTruck,
+  HiOutlineUserCircle,
+} from "react-icons/hi";
 import { AuthContext } from "../contexts/AuthContext";
 import logo from "../assets/fav_icon.png";
 import toast from "react-hot-toast";
 import { BiLogOutCircle } from "react-icons/bi";
 import { GiPlantRoots } from "react-icons/gi";
+import { HiOutlineCheckBadge } from "react-icons/hi2";
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -155,6 +161,63 @@ const DashboardLayout = () => {
                     <PiUsersThreeBold size={20} className="text-primary" />
                     <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
                       User Management
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/manage-orders"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip=" Manage Orders"
+                  >
+                    <HiOutlineShoppingBag size={20} className="text-primary" />
+                    <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
+                      Manage Orders
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/all-deliveries"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="  All Deliveries"
+                  >
+                    <HiOutlineTruck size={20} className="text-primary" />
+                    <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
+                      All Deliveries
+                    </span>
+                  </Link>
+                </li>
+              </>
+            )}
+
+            {/* user only  */}
+            {role === "user" && (
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/payment-success"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Payment Success"
+                  >
+                    <HiOutlineCheckBadge size={20} className="text-primary" />
+                    <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
+                      Payment Success
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/my-payments"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="My Payments"
+                  >
+                    <HiOutlineReceiptRefund
+                      size={20}
+                      className="text-primary"
+                    />
+                    <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
+                      My Payments
                     </span>
                   </Link>
                 </li>

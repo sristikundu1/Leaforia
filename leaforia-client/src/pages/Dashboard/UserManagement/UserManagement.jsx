@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { Link } from "react-router";
-import { FaUsersCog } from "react-icons/fa";
 import { TbUsersMinus } from "react-icons/tb";
+import toast from "react-hot-toast";
 
 const UserManagement = () => {
   const axiosSecure = useAxiosSecure();
@@ -19,7 +18,14 @@ const UserManagement = () => {
       });
   }, []);
 
-  console.log(users);
+  const handleDeleteUser = async (id) => {
+    const res = await axiosSecure.delete(`/users/${id}`);
+    if (res.data.deletedCount) {
+      toast.error("User deleted from dashboard! ");
+      const remainingUser = users.filter((user) => user._id !== id);
+      setUsers(remainingUser);
+    }
+  };
 
   return (
     <div>
@@ -63,7 +69,6 @@ const UserManagement = () => {
                 </td>
                 <td>{user.role}</td>
                 <td>
-                  {" "}
                   {user?.createdAt &&
                     (() => {
                       const date = new Date(user.createdAt);
@@ -95,15 +100,8 @@ const UserManagement = () => {
                 </td>
 
                 <th className="space-x-3">
-                  <Link
-                    to={`/dashboard/edit-plant/${user._id}`}
-                    state={{ user }}
-                    className="btn btn-ghost btn-xs bg-secondary text-white hover:bg-primary hover:text-white p-4"
-                  >
-                    <FaUsersCog size={20} />
-                  </Link>
                   <button
-                    onClick={() => handleDeletePlant(user._id)}
+                    onClick={() => handleDeleteUser(user._id)}
                     className="btn btn-ghost btn-xs bg-secondary text-white hover:bg-primary hover:text-white p-4"
                   >
                     <TbUsersMinus size={20} />

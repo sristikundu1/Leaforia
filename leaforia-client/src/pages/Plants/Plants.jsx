@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import PlantCard from "../../components/PlantCard/PlantCard";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Plants = () => {
-  const allPlants = useLoaderData();
+  const [plants, setPlants] = useState([]);
+  const axiosSecure = useAxiosSecure();
+
+  useEffect(() => {
+    axiosSecure
+      .get("/plants")
+      .then((res) => {
+        setPlants(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
   //   get all category
-  const categories = [...new Set(allPlants.map((p) => p.category))];
+  const categories = [...new Set(plants.map((p) => p.category))];
 
   return (
-    <div>
+    <div className="pt-28">
       <Navbar></Navbar>
       <div className="text-center mt-6">
         <p className="font-medium text-lg text-secondary ">
@@ -41,7 +54,7 @@ const Plants = () => {
           {categories.map((cat, index) => (
             <TabPanel key={index}>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {allPlants
+                {plants
                   .filter((plant) => plant.category === cat)
                   .map((plant) => (
                     <PlantCard key={plant.plantId} plants={plant} />

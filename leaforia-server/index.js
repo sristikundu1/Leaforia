@@ -2,7 +2,7 @@ require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const cors = require("cors");
-
+const stripe = require("stripe")(process.env.STRIPE_SECRETE);
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -33,6 +33,7 @@ async function run() {
     // create the colletion in DB
     const plantCollection = client.db("LeaforiaDB").collection("plants");
     const userCollection = client.db("LeaforiaDB").collection("users");
+    const paymentCollection = client.db("LeaforiaDB").collection("payments");
 
     // user related API
 
@@ -73,10 +74,36 @@ async function run() {
       res.send(result);
     });
 
+    // delete user from database
+    app.delete("/user/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // get plant data from database to ui
     app.get("/plants", async (req, res) => {
       const result = await plantCollection.find().toArray();
       res.send(result);
+    });
+
+    // get a plant info from database
+    app.get("/plants/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const plant = await plantCollection.findOne(query);
+
+      // Get related plants (same category, exclude current)
+      const relatedPlants = await plantCollection
+        .find({
+          category: plant.category,
+          _id: { $ne: plant._id },
+        })
+
+        .toArray();
+
+      res.send({ plant, relatedPlants });
     });
 
     // plant data add in database
@@ -106,6 +133,75 @@ async function run() {
 
       const result = await plantCollection.deleteOne(query);
       res.send(result);
+    });
+
+    // payment related API
+    app.post("/create-checkout-session", async (req, res) => {
+      const paymentInfo = req.body;
+      const amount = parseInt(paymentInfo.price) * 100;
+      const session = await stripe.checkout.sessions.create({
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              unit_amount: amount,
+              product_data: {
+                name: paymentInfo.plantName,
+              },
+            },
+
+            quantity: paymentInfo.quantity,
+          },
+        ],
+
+        customer_email: paymentInfo.email,
+        mode: "payment",
+        metadata: {
+          parcelId: paymentInfo.plantId,
+          plantName: paymentInfo.plantName,
+          quantity: paymentInfo.quantity,
+        },
+        success_url: `${process.env.SITE_DOMAIN}/dashboard/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.SITE_DOMAIN}/dashboard/payment-canceled`,
+      });
+
+      res.send({ url: session.url });
+    });
+
+    app.patch("/payment-success", async (req, res) => {
+      const sessionId = req.query.session_id;
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      if (session.payment_status === "paid") {
+        // Check if this transaction was already recorded (prevents duplicates on refresh)
+        const existingPayment = await paymentCollection.findOne({
+          transactionId: session.payment_intent,
+        });
+
+        if (existingPayment) {
+          return res.send(existingPayment);
+        }
+
+        const payment = {
+          amount: session.amount_total / 100,
+          currency: session.currency,
+          customer_email: session.customer_email,
+          parcelId: session.metadata.parcelId,
+          plantName: session.metadata.plantName,
+          quantity: parseInt(session.metadata.quantity),
+          transactionId: session.payment_intent,
+          paymentStatus: "paid",
+          status: "In Progress",
+          paidAt: new Date(),
+        };
+
+        const resultPayment = await paymentCollection.insertOne(payment);
+        // Update the plant stock if necessary
+        await plantCollection.updateOne(
+          { _id: new ObjectId(session.metadata.plantId) },
+          { $inc: { availableStock: -parseInt(session.metadata.quantity) } },
+        );
+        res.send({ ...payment, _id: resultPayment.insertedId });
+      }
     });
 
     // Send a ping to confirm a successful connection

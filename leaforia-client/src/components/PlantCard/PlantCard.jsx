@@ -4,7 +4,7 @@ import { LuEye } from "react-icons/lu";
 import { Link } from "react-router";
 
 const PlantCard = ({ plants }) => {
-  const { plantId, image, plantName, price, rating } = plants;
+  const { _id, image, plantName, price, rating } = plants;
   return (
     <div>
       <div className="group w-full max-w-sm rounded-lg  p-4 shadow-sm transition hover:shadow-lg">
@@ -23,7 +23,7 @@ const PlantCard = ({ plants }) => {
             >
               <FaRegHeart size={20} />
             </button>
-            <Link to={`/plant/${plantId}`}>
+            <Link to={`/plant/${_id}`}>
               <button
                 title="View Details"
                 className="rounded-full bg-white p-3 text-primary shadow hover:bg-gray-100 transition"

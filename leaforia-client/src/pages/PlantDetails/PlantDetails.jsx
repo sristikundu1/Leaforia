@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { FaRegHeart, FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { useLoaderData, useParams } from "react-router";
 import Consultation from "../../components/Consultation/Consultation";
@@ -6,21 +6,25 @@ import PlantCard from "../../components/PlantCard/PlantCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { AuthContext } from "../../contexts/AuthContext";
+import useAxiosSecure from "./../../hooks/useAxiosSecure";
+import Loading from "../../components/Loading/Loading";
+import toast from "react-hot-toast";
 
 const PlantDetails = () => {
   const [quantity, setQuantity] = useState(1); // default quantity 1
   const { id } = useParams();
+  const { user } = use(AuthContext);
+  const axiosSecure = useAxiosSecure();
 
-  const allPlants = useLoaderData();
+  const { plant, relatedPlants } = useLoaderData();
 
-  const plantData = allPlants?.find((plant) => plant.plantId == id);
+  const plantData = plant;
+  const relatedPlant = relatedPlants;
 
-  const relatedPlant = allPlants?.filter(
-    (plant) => plant.category === plantData.category && plant.plantId != id,
-  );
+  if (!plantData) return <Loading></Loading>;
 
   const {
-    plantId,
     image,
     plantName,
     price,
@@ -84,93 +88,144 @@ const PlantDetails = () => {
     ],
   };
 
+  // payment function
+  const handlePayment = async () => {
+    const paymentInfo = {
+      parcelId: id,
+      userName: user.displayname,
+      email: user.email,
+      quantity: quantity,
+      plantName: plantName,
+      price: price,
+    };
+
+    const res = await axiosSecure.post("/create-checkout-session", paymentInfo);
+    toast.success("Your payment is successful", {
+      icon: "🎉",
+      style: {
+        borderRadius: "10px",
+        background: "#034e3b",
+        color: "#fff",
+      },
+    });
+    window.location.href = res.data.url;
+  };
+
   return (
-    <div className="px-5 md:px-0 md:max-w-10/12 mx-auto my-20">
-      <div className="grid grid-cols-1 md:grid-cols-10 gap-6">
-        <div className="col-span-1 md:col-span-5">
-          <img className="h-auto" src={image} alt="plant" />
-        </div>
-        <div className="col-span-1 md:col-span-5">
-          <h2 className="text-5xl font-bold text-primary">{plantName}</h2>
-
-          <p className="font-bold text-lg my-4 text-secondary">{category}</p>
-
-          <div className="flex justify-between items-center my-5">
-            <p className="font-semibold text-2xl"> ${price}</p>
-
-            <div className="flex items-center justify-center  gap-1">
-              {Array.from({ length: 5 }).map((_, index) => {
-                const starNumber = index + 1;
-
-                return (
-                  <span key={index}>
-                    {rating >= starNumber ? (
-                      /* 1. Full Star: Rating is higher than or equal to the star rank */
-                      <FaStar className="text-orange-400" />
-                    ) : rating >= starNumber - 0.5 ? (
-                      /* 2. Half Star: Rating is between the current and previous whole number */
-                      <FaStarHalfAlt className="text-orange-400" />
-                    ) : (
-                      /* 3. Empty Star: Rating hasn't reached this level yet */
-                      <FaRegStar className="text-gray-300" />
-                    )}
-                  </span>
-                );
-              })}
-            </div>
+    <div className="px-5 md:px-0 md:max-w-10/12 mx-auto my-20 pt-24">
+      <div className="max-w-7xl mx-auto p-4 lg:p-10 bg-white rounded-3xl shadow-sm">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Left Column: Image Section */}
+          <div className="lg:col-span-6 bg-secondary/30 rounded-2xl overflow-hidden flex items-center justify-center p-8 transition-all hover:shadow-inner">
+            <img
+              className="w-full h-auto object-contain mix-blend-multiply transform transition hover:scale-105 duration-500"
+              src={image}
+              alt={plantName}
+            />
           </div>
-          <p className="text-[#716F6B] font-medium text-lg leading-8 mb-10">
-            {description}
-          </p>
 
-          <p className="font-bold text-lg my-3">
-            Vendor: <span className="pl-15 text-[#716F6B]">{providerName}</span>
-          </p>
-
-          <p className="font-bold text-lg my-3">
-            Availability:
-            <span className="pl-8 text-[#716F6B]">
-              {availableStock && availableStock > 0
-                ? "In Stock"
-                : "Out Of stock"}
+          {/* Right Column: Content Section */}
+          <div className="lg:col-span-6 flex flex-col">
+            {/* Category Badge */}
+            <span className="uppercase tracking-widest text-xs font-bold text-secondary mb-2">
+              {category}
             </span>
-          </p>
 
-          <p className="font-bold text-lg my-2">
-            Care: <span className="pl-20 text-[#716F6B]">{careLevel}</span>
-          </p>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 leading-tight">
+              {plantName}
+            </h2>
 
-          <div className="flex justify-between items-center my-12">
-            <div className="flex items-center  rounded-lg border-2 border-primary gap-3">
-              <button
-                onClick={handleDecrease}
-                className="bg-primary text-white px-2 md:px-6 py-3 text-lg hover:bg-secondary"
-              >
-                -
-              </button>
-              <span className="text-lg font-bold  md:px-6 py-3">
-                {quantity}
-              </span>
-              <button
-                onClick={handleIncrease}
-                className="bg-primary text-white px-2 md:px-6 py-3 text-lg  hover:bg-secondary"
-              >
-                +
-              </button>
+            {/* Price & Rating Bar */}
+            <div className="flex flex-wrap items-center gap-6 mb-6 pb-6 border-b border-slate-100">
+              <span className="text-3xl font-bold text-primary">${price}</span>
+
+              <div className="flex items-center gap-1 border-l pl-6 border-slate-200">
+                <div className="flex text-orange-400">
+                  {Array.from({ length: 5 }).map((_, index) => {
+                    const starNumber = index + 1;
+                    if (rating >= starNumber) return <FaStar key={index} />;
+                    if (rating >= starNumber - 0.5)
+                      return <FaStarHalfAlt key={index} />;
+                    return <FaRegStar key={index} className="text-slate-300" />;
+                  })}
+                </div>
+                <span className="text-sm font-medium text-slate-500 ml-2">
+                  ({rating}/5)
+                </span>
+              </div>
             </div>
 
-            <div>
-              <button className="btn bg-primary text-white px-8 py-6">
+            <p className="text-slate-600 text-lg leading-relaxed mb-8">
+              {description}
+            </p>
+
+            {/* Product Specs Table-style layout */}
+            <div className="space-y-4 mb-10">
+              <div className="flex py-2 border-b border-slate-50">
+                <span className="w-32 font-semibold text-slate-900">
+                  Vendor
+                </span>
+                <span className="text-slate-600">{providerName}</span>
+              </div>
+              <div className="flex py-2 border-b border-slate-50">
+                <span className="w-32 font-semibold text-slate-900">
+                  Availability
+                </span>
+                <span
+                  className={`${availableStock > 0 ? "text-emerald-600" : "text-red-500"} font-medium`}
+                >
+                  {availableStock > 0
+                    ? `In Stock (${availableStock} units)`
+                    : "Out Of stock"}
+                </span>
+              </div>
+              <div className="flex py-2">
+                <span className="w-32 font-semibold text-slate-900">
+                  Care Level
+                </span>
+                <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-bold">
+                  {careLevel}
+                </span>
+              </div>
+            </div>
+
+            {/* Action Area */}
+            <div className="flex flex-wrap items-center gap-4">
+              {/* Quantity Selector */}
+              <div className="flex items-center bg-slate-100 rounded-xl p-1 shadow-sm">
+                <button
+                  onClick={handleDecrease}
+                  className="w-10 h-10 flex items-center justify-center rounded-lg bg-white text-slate-900 hover:bg-primary hover:text-white transition shadow-sm"
+                >
+                  -
+                </button>
+                <span className="w-12 text-center font-bold text-lg text-slate-900">
+                  {quantity}
+                </span>
+                <button
+                  onClick={handleIncrease}
+                  className="w-10 h-10 flex items-center justify-center rounded-lg bg-white text-slate-900 hover:bg-primary hover:text-white transition shadow-sm"
+                >
+                  +
+                </button>
+              </div>
+
+              {/* Buy Button */}
+              <button
+                onClick={handlePayment}
+                className="flex-1 bg-primary text-white font-bold py-4 px-8 rounded-xl hover:bg-secondary transition-all transform active:scale-95 shadow-lg shadow-primary/20"
+              >
                 Buy Now
               </button>
-            </div>
 
-            <button
-              title="Add to Wishlist"
-              className="rounded-full bg-white p-3 text-primary shadow hover:bg-red-50 transition"
-            >
-              <FaRegHeart size={20} />
-            </button>
+              {/* Wishlist Button */}
+              <button
+                title="Add to Wishlist"
+                className="p-4 rounded-xl border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-100 hover:bg-red-50 transition-all"
+              >
+                <FaRegHeart size={24} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -186,7 +241,7 @@ const PlantDetails = () => {
           <div className="mt-10 ">
             <SlickSlider {...settings}>
               {relatedPlant.map((plant) => (
-                <div key={plant.plantId} className="px-2 py-4 ">
+                <div key={plant._id} className="px-2 py-4 ">
                   <PlantCard plants={plant} />
                 </div>
               ))}

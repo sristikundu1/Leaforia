@@ -16,6 +16,10 @@ import AddPlant from "../pages/Dashboard/AddPlant/AddPlant";
 import AllPlants from "../pages/Dashboard/AllPlants/AllPlants";
 import UpdatePlant from "./../pages/Dashboard/UpdatePlant/UpdatePlant";
 import UserManagement from "../pages/Dashboard/UserManagement/UserManagement";
+import AllDeliveries from "../pages/Dashboard/AllDeliveries/AllDeliveries";
+import ManageOrders from "../pages/Dashboard/ManageOrders/ManageOrders";
+import PaymentSuccess from "./../pages/Dashboard/PaymentSuccess/PaymentSuccess";
+import MyPayments from "../pages/Dashboard/MyPayments/MyPayments";
 
 export const router = createBrowserRouter([
   {
@@ -28,12 +32,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/plant/:id",
-        loader: () => fetch("/plants.json"),
         element: (
           <PrivateRoute>
             <PlantDetails></PlantDetails>
           </PrivateRoute>
         ),
+        loader: async ({ params }) => {
+          const res = await fetch(`http://localhost:3000/plants/${params.id}`);
+          return res.json();
+        },
         hydrateFallbackElement: <Loading />,
       },
 
@@ -97,6 +104,22 @@ export const router = createBrowserRouter([
       {
         path: "user-management",
         element: <UserManagement></UserManagement>,
+      },
+      {
+        path: "manage-orders",
+        element: <ManageOrders></ManageOrders>,
+      },
+      {
+        path: "all-deliveries",
+        element: <AllDeliveries></AllDeliveries>,
+      },
+      {
+        path: "payment-success",
+        element: <PaymentSuccess></PaymentSuccess>,
+      },
+      {
+        path: "my-payments",
+        element: <MyPayments></MyPayments>,
       },
       {
         path: "profile",
