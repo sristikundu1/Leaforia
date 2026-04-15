@@ -7,7 +7,7 @@ const AboutUs = () => {
   return (
     <div>
       <Navbar></Navbar>
-      <div className="w-full">
+      <div className="w-full pt-20">
         {/* Banner */}
         <div
           className="relative w-full h-64 md:h-96 bg-cover bg-center  overflow-hidden"
@@ -86,8 +86,6 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
-
-      <Footer></Footer>
     </div>
   );
 };

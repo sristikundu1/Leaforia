@@ -26,6 +26,9 @@ import AddArticle from "../pages/Dashboard/AddArticles/AddArticles";
 import WishPlant from "../pages/WishPlant/WishPlant";
 import Guides from "../pages/Guides/Guides";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
+import ContactUs from "../pages/ContactUs/ContactUs";
+import FAQ from "../pages/FAQ/FAQ";
+import PolicyPage from "../pages/PolicyPage/PolicyPage";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +73,18 @@ export const router = createBrowserRouter([
         path: "/guides",
         loader: () => fetch("/plantCare.json"),
         element: <Guides></Guides>,
+      },
+      {
+        path: "/contact-us",
+        element: <ContactUs></ContactUs>,
+      },
+      {
+        path: "/faq",
+        element: <FAQ></FAQ>,
+      },
+      {
+        path: "/policy",
+        element: <PolicyPage></PolicyPage>,
       },
     ],
   },

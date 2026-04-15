@@ -64,11 +64,11 @@ const DashboardLayout = () => {
 
           {/* CENTER - Search (optional but looks pro) */}
           <div className="flex-1 hidden md:flex justify-center">
-            <input
+            {/* <input
               type="text"
               placeholder="Search plants, users..."
               className="input input-bordered w-72 input-sm"
-            />
+            /> */}
           </div>
 
           {/* RIGHT - Actions */}

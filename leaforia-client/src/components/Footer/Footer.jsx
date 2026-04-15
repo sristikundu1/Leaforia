@@ -54,7 +54,10 @@ const Footer = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/contact" className="hover:text-primary transition">
+              <NavLink
+                to="/contact-us"
+                className="hover:text-primary transition"
+              >
                 Contact
               </NavLink>
             </li>
@@ -68,12 +71,18 @@ const Footer = () => {
           </h3>
           <ul className="space-y-3 text-gray-300">
             <li>
-              <NavLink to="/privacy" className="hover:text-primary transition">
-                Privacy & Policy
+              <NavLink
+                to="/policy#privacy-policy"
+                className="hover:text-primary transition"
+              >
+                <a href="#privacy-policy">Privacy & Policy</a>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/terms" className="hover:text-primary transition">
+              <NavLink
+                to="/policy#terms-and-conditions"
+                className="hover:text-primary transition"
+              >
                 Terms of Use
               </NavLink>
             </li>
