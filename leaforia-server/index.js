@@ -34,6 +34,7 @@ async function run() {
     const plantCollection = client.db("LeaforiaDB").collection("plants");
     const userCollection = client.db("LeaforiaDB").collection("users");
     const paymentCollection = client.db("LeaforiaDB").collection("payments");
+    const articleCollection = client.db("LeaforiaDB").collection("articles");
 
     // user related API
 
@@ -132,6 +133,27 @@ async function run() {
       const query = { _id: new ObjectId(id) };
 
       const result = await plantCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // article related API
+
+    app.post("/articles", async (req, res) => {
+      const article = req.body;
+      const result = await articleCollection.insertOne(article);
+      res.send(result);
+    });
+
+    app.patch("/article/comment/:id", async (req, res) => {
+      const id = req.params.id;
+      const comment = req.body; // { userName, text, userImage, date }
+
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $push: { comments: comment }, // $push adds the object to the array
+      };
+
+      const result = await articleCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
 

@@ -57,8 +57,6 @@ const AddPlant = () => {
 
       {/* CONTENT */}
       <div className="relative z-10 p-4 md:p-8 animate-fade-in font-montserrat">
-        {/* YOUR EXISTING CODE STARTS HERE */}
-
         {/* Header Area */}
         <div className="mb-10">
           <h1 className="text-2xl font-bold text-primary">

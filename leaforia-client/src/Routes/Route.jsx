@@ -22,6 +22,7 @@ import PaymentSuccess from "./../pages/Dashboard/PaymentSuccess/PaymentSuccess";
 import MyPayments from "../pages/Dashboard/MyPayments/MyPayments";
 import OrderTracking from "./../pages/Dashboard/OrderTracking/OrderTracking";
 import PaymentCanceled from "../pages/Dashboard/PaymentCanceled/PaymentCanceled";
+import AddArticle from "../pages/Dashboard/AddArticles/AddArticles";
 
 export const router = createBrowserRouter([
   {
@@ -79,7 +80,7 @@ export const router = createBrowserRouter([
 
   {
     path: "/plants",
-    loader: () => fetch("/plants.json"),
+    // loader: () => fetch("/plants.json"),
     element: <Plants></Plants>,
     hydrateFallbackElement: <Loading />,
   },
@@ -98,6 +99,10 @@ export const router = createBrowserRouter([
       {
         path: "all-plants",
         element: <AllPlants></AllPlants>,
+      },
+      {
+        path: "add-articles",
+        element: <AddArticle></AddArticle>,
       },
       {
         path: "edit-plant/:id",

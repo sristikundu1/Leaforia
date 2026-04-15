@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { BiLogOutCircle } from "react-icons/bi";
 import { GiPlantRoots } from "react-icons/gi";
 import { HiOutlineCheckBadge } from "react-icons/hi2";
+import { TfiWrite } from "react-icons/tfi";
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -154,6 +155,18 @@ const DashboardLayout = () => {
                 </li>
                 <li>
                   <Link
+                    to="/dashboard/add-articles"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Add Articles"
+                  >
+                    <TfiWrite size={20} className="text-primary" />
+                    <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
+                      Add Articles
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     to="/dashboard/user-management"
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                     data-tip="User Management"
@@ -194,18 +207,6 @@ const DashboardLayout = () => {
             {/* user only  */}
             {role === "user" && (
               <>
-                {/* <li>
-                  <Link
-                    to="/dashboard/payment-success"
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Payment Success"
-                  >
-                    <HiOutlineCheckBadge size={20} className="text-primary" />
-                    <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
-                      Payment Success
-                    </span>
-                  </Link>
-                </li> */}
                 <li>
                   <Link
                     to="/dashboard/order-tracking"
