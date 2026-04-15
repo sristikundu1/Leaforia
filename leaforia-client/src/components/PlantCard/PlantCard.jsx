@@ -2,9 +2,15 @@ import React from "react";
 import { FaRegHeart, FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { LuEye } from "react-icons/lu";
 import { Link } from "react-router";
+import { addPlantId } from "../../utils/localStorage";
+import toast from "react-hot-toast";
 
 const PlantCard = ({ plants }) => {
   const { _id, image, plantName, price, rating } = plants;
+
+  const handleWishPlant = (_id) => {
+    addPlantId(_id);
+  };
   return (
     <div>
       <div className="group w-full max-w-sm rounded-lg  p-4 shadow-sm transition hover:shadow-lg">
@@ -18,6 +24,7 @@ const PlantCard = ({ plants }) => {
 
           <div className="absolute inset-0 flex items-center justify-center gap-4 bg-[#0000004d] bg-opacity-20 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <button
+              onClick={() => handleWishPlant(_id.toString())}
               title="Add to Wishlist"
               className="rounded-full bg-white p-3 text-primary shadow hover:bg-red-50 transition"
             >

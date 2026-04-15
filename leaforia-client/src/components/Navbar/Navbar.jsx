@@ -37,13 +37,6 @@ const Navbar = () => {
         : "text-gray-700 hover:text-primary"
     }`;
 
-  //  const navClass = ({ isActive }) =>
-  // `px-3 py-1 transition-all duration-200 ${
-  //   isActive
-  //     ? "text-primary border-b-2 border-primary"
-  //     : "text-gray-700 hover:text-primary"
-  // }`;
-
   const links = (
     <>
       <NavLink to="/" className={navClass}>
@@ -106,19 +99,15 @@ const Navbar = () => {
         {/* RIGHT */}
         <div className="navbar-end gap-4 items-center">
           {/* Icons */}
-          <FaRegHeart
-            className={`cursor-pointer transition ${
-              isScrolled ? "text-gray-700" : "text-white"
-            } hover:text-primary`}
-            size={20}
-          />
+          <Link to={"/wishPlants"}>
+            <FaRegHeart
+              className={`cursor-pointer transition ${
+                isScrolled ? "text-gray-700" : "text-white"
+              } hover:text-primary`}
+              size={20}
+            />
+          </Link>
 
-          <HiOutlineShoppingCart
-            className={`cursor-pointer transition ${
-              isScrolled ? "text-gray-700" : "text-white"
-            } hover:text-primary`}
-            size={22}
-          />
           {/* Auth */}
           {user ? (
             <div className="dropdown dropdown-end">

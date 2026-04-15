@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Link, Outlet } from "react-router";
 import useRole from "../hooks/useRole";
 import { PiPottedPlantDuotone, PiUsersThreeBold } from "react-icons/pi";
@@ -15,12 +15,14 @@ import { BiLogOutCircle } from "react-icons/bi";
 import { GiPlantRoots } from "react-icons/gi";
 import { HiOutlineCheckBadge } from "react-icons/hi2";
 import { TfiWrite } from "react-icons/tfi";
+import { IoNotifications } from "react-icons/io5";
+import NotificationDropdown from "../components/NotificationDropdown/NotificationDropdown";
+// import { getFavPlants } from "../utils/localStorage";
 
 const DashboardLayout = () => {
   const { role } = useRole();
   const { user, logOut } = use(AuthContext);
 
-  //  logout
   const handleLogOut = () => {
     logOut()
       .then(() => toast.success("Logout Successful!"))
@@ -72,7 +74,8 @@ const DashboardLayout = () => {
           {/* RIGHT - Actions */}
           <div className="flex items-center gap-4">
             {/* Notifications */}
-            <button className="btn btn-ghost btn-circle">🔔</button>
+
+            <NotificationDropdown></NotificationDropdown>
 
             {/* Avatar */}
             <div className="w-10 h-10 rounded-full overflow-hidden border">

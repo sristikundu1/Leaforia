@@ -23,6 +23,7 @@ import MyPayments from "../pages/Dashboard/MyPayments/MyPayments";
 import OrderTracking from "./../pages/Dashboard/OrderTracking/OrderTracking";
 import PaymentCanceled from "../pages/Dashboard/PaymentCanceled/PaymentCanceled";
 import AddArticle from "../pages/Dashboard/AddArticles/AddArticles";
+import WishPlant from "../pages/WishPlant/WishPlant";
 
 export const router = createBrowserRouter([
   {
@@ -49,7 +50,6 @@ export const router = createBrowserRouter([
 
       {
         path: "/article/:id",
-        // loader: () => fetch("/articles.json"),
         element: (
           <PrivateRoute>
             <ArticleDetails></ArticleDetails>
@@ -60,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <AboutUs></AboutUs>,
+      },
+      {
+        path: "/wishPlants",
+        element: <WishPlant></WishPlant>,
       },
     ],
   },

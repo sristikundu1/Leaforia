@@ -35,6 +35,7 @@ async function run() {
     const userCollection = client.db("LeaforiaDB").collection("users");
     const paymentCollection = client.db("LeaforiaDB").collection("payments");
     const articleCollection = client.db("LeaforiaDB").collection("articles");
+    const wishListCollection = client.db("LeaforiaDB").collection("wishlist");
 
     // user related API
 

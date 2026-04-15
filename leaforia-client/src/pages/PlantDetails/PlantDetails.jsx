@@ -10,6 +10,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import useAxiosSecure from "./../../hooks/useAxiosSecure";
 import Loading from "../../components/Loading/Loading";
 import toast from "react-hot-toast";
+import { addPlantId } from "../../utils/localStorage";
 
 const PlantDetails = () => {
   const [quantity, setQuantity] = useState(1); // default quantity 1
@@ -25,6 +26,7 @@ const PlantDetails = () => {
   if (!plantData) return <Loading></Loading>;
 
   const {
+    _id,
     image,
     plantName,
     price,
@@ -86,6 +88,11 @@ const PlantDetails = () => {
         settings: { slidesToShow: 1, slidesToScroll: 1 },
       },
     ],
+  };
+
+  // wishlist function
+  const handleWishPlant = (_id) => {
+    addPlantId(_id);
   };
 
   // payment function
@@ -221,6 +228,7 @@ const PlantDetails = () => {
 
               {/* Wishlist Button */}
               <button
+                onClick={() => handleWishPlant(_id.toString())}
                 title="Add to Wishlist"
                 className="p-4 rounded-xl border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-100 hover:bg-red-50 transition-all"
               >
