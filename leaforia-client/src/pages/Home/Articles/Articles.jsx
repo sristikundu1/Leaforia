@@ -19,9 +19,6 @@ const Articles = () => {
       });
   }, []);
 
-  console.log(articles);
-  // const homeArticles = articles.slice(0, 4);
-  // const articles = use(articlesPromises);
   if (articles.length === 0) {
     return <Loading></Loading>;
   }
