@@ -136,6 +136,43 @@ async function run() {
     });
 
     // payment related API
+    // get all the payment that status is paid (customer pay the price)
+    app.get("/admin/manage-orders", async (req, res) => {
+      const result = await paymentCollection
+        .find({ paymentStatus: "paid", status: "In Progress" })
+        .toArray();
+      res.send(result);
+    });
+
+    // get all the deliveries that completed
+    app.get("/admin/deliveries", async (req, res) => {
+      const result = await paymentCollection
+        .find({ status: "Delivered" })
+        .toArray();
+      res.send(result);
+    });
+
+    app.get("/active-order/:email", async (req, res) => {
+      const email = req.params.email;
+      // Look for the most recent order that is still "In Progress"
+      const order = await paymentCollection.findOne(
+        { customer_email: email, status: "In Progress" },
+        { sort: { paidAt: -1 } },
+      );
+      res.send(order); // Returns null if no "In Progress" orders found
+    });
+
+    app.get("/my-payments", async (req, res) => {
+      const email = req.query.email;
+
+      const result = await paymentCollection
+        .find({ customer_email: email })
+        .sort({ paidAt: -1 })
+        .toArray();
+
+      res.send(result);
+    });
+
     app.post("/create-checkout-session", async (req, res) => {
       const paymentInfo = req.body;
       const amount = parseInt(paymentInfo.price) * 100;
@@ -157,9 +194,10 @@ async function run() {
         customer_email: paymentInfo.email,
         mode: "payment",
         metadata: {
-          parcelId: paymentInfo.plantId,
+          plantId: paymentInfo.plantId,
           plantName: paymentInfo.plantName,
           quantity: paymentInfo.quantity,
+          userName: paymentInfo.userName,
         },
         success_url: `${process.env.SITE_DOMAIN}/dashboard/payment-success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.SITE_DOMAIN}/dashboard/payment-canceled`,
@@ -170,6 +208,7 @@ async function run() {
 
     app.patch("/payment-success", async (req, res) => {
       const sessionId = req.query.session_id;
+      if (!sessionId) return res.status(400).send({ message: "No session ID" });
       const session = await stripe.checkout.sessions.retrieve(sessionId);
       if (session.payment_status === "paid") {
         // Check if this transaction was already recorded (prevents duplicates on refresh)
@@ -185,7 +224,8 @@ async function run() {
           amount: session.amount_total / 100,
           currency: session.currency,
           customer_email: session.customer_email,
-          parcelId: session.metadata.parcelId,
+          userName: session.metadata.userName,
+          plantId: session.metadata.plantId,
           plantName: session.metadata.plantName,
           quantity: parseInt(session.metadata.quantity),
           transactionId: session.payment_intent,
@@ -202,6 +242,14 @@ async function run() {
         );
         res.send({ ...payment, _id: resultPayment.insertedId });
       }
+    });
+
+    app.patch("/orders/approve/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = { $set: { status: "Delivered" } };
+      const result = await paymentCollection.updateOne(filter, updateDoc);
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection

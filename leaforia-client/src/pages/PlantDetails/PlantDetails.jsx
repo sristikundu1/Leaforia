@@ -91,15 +91,17 @@ const PlantDetails = () => {
   // payment function
   const handlePayment = async () => {
     const paymentInfo = {
-      parcelId: id,
-      userName: user.displayname,
+      plantId: id,
       email: user.email,
       quantity: quantity,
       plantName: plantName,
       price: price,
+      userName: user.displayName,
     };
 
     const res = await axiosSecure.post("/create-checkout-session", paymentInfo);
+
+    window.location.href = res.data.url;
     toast.success("Your payment is successful", {
       icon: "🎉",
       style: {
@@ -108,7 +110,6 @@ const PlantDetails = () => {
         color: "#fff",
       },
     });
-    window.location.href = res.data.url;
   };
 
   return (

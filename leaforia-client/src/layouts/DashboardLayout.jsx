@@ -194,7 +194,7 @@ const DashboardLayout = () => {
             {/* user only  */}
             {role === "user" && (
               <>
-                <li>
+                {/* <li>
                   <Link
                     to="/dashboard/payment-success"
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -203,6 +203,18 @@ const DashboardLayout = () => {
                     <HiOutlineCheckBadge size={20} className="text-primary" />
                     <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
                       Payment Success
+                    </span>
+                  </Link>
+                </li> */}
+                <li>
+                  <Link
+                    to="/dashboard/order-tracking"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Order Tracking"
+                  >
+                    <HiOutlineCheckBadge size={20} className="text-primary" />
+                    <span className="is-drawer-close:hidden font-semibold text-secondary text-lg">
+                      Order Tracking
                     </span>
                   </Link>
                 </li>

@@ -34,7 +34,7 @@ const Navbar = () => {
     `px-3 py-1 transition-all duration-200 ${
       isActive
         ? "text-primary border-b-2 border-primary"
-        : "text-white hover:text-primary"
+        : "text-gray-700 hover:text-primary"
     }`;
 
   //  const navClass = ({ isActive }) =>

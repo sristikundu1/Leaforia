@@ -9,73 +9,45 @@ const PaymentSuccess = () => {
   const sessionId = searchParams.get("session_id");
   const axiosSecure = useAxiosSecure();
 
-  const [payment, setPayment] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (sessionId) {
       axiosSecure
         .patch(`/payment-success?session_id=${sessionId}`)
-        .then((res) => {
-          setPayment(res.data);
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
+        .finally(() => setLoading(false));
     }
   }, [sessionId, axiosSecure]);
 
   if (loading) return <Loading></Loading>;
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 text-center border border-green-100">
-        <HiOutlineCheckBadge className="text-7xl text-primary mx-auto mb-4" />
-
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">
-          Order Confirmed!
-        </h2>
-        <p className="text-gray-500 mb-8">
-          Your plants are getting ready for their new home.
-        </p>
-
-        <div className="space-y-4 text-left bg-gray-50 p-6 rounded-2xl border border-dashed border-gray-300">
-          <div className="flex justify-between">
-            <span className="text-gray-500 text-sm">Plant Name:</span>
-            <span className="font-bold text-primary">{payment?.plantName}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-500 text-sm">Quantity:</span>
-            <span className="font-bold">{payment?.quantity}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-500 text-sm">Transaction ID:</span>
-            <span className="text-[10px] font-mono self-center">
-              {payment?.transactionId}
-            </span>
-          </div>
-
-          <hr />
-
-          <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-sm">Payment:</span>
-            <span className="badge bg-secondary gap-2 py-3 px-4 text-white">
-              Paid
-            </span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-sm">Delivery:</span>
-            <span className="badge badge-warning gap-2 py-3 px-4">
-              <HiOutlineClock /> {payment?.status}
-            </span>
-          </div>
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="text-center">
+        <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <HiOutlineCheckBadge className="text-5xl" />
         </div>
-
-        <button
-          onClick={() => (window.location.href = "/dashboard/my-payments")}
-          className="mt-8 w-full py-3 bg-primary text-white rounded-xl font-bold hover:opacity-90 transition-all"
-        >
-          View All Orders
-        </button>
+        <h1 className="text-4xl font-black text-gray-900 mb-4">
+          Payment Received!
+        </h1>
+        <p className="text-gray-600 max-w-sm mx-auto mb-8">
+          Thank you for your purchase. Your payment was processed successfully
+          and your plants are reserved.
+        </p>
+        <div className="flex flex-col gap-3">
+          <button
+            onClick={() => (window.location.href = "/dashboard/order-tracking")}
+            className="px-8 py-3 bg-primary text-white rounded-full font-bold hover:shadow-lg transition-all"
+          >
+            Track My Order
+          </button>
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="text-gray-500 hover:text-primary font-medium"
+          >
+            Back to Home
+          </button>
+        </div>
       </div>
     </div>
   );

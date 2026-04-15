@@ -20,6 +20,8 @@ import AllDeliveries from "../pages/Dashboard/AllDeliveries/AllDeliveries";
 import ManageOrders from "../pages/Dashboard/ManageOrders/ManageOrders";
 import PaymentSuccess from "./../pages/Dashboard/PaymentSuccess/PaymentSuccess";
 import MyPayments from "../pages/Dashboard/MyPayments/MyPayments";
+import OrderTracking from "./../pages/Dashboard/OrderTracking/OrderTracking";
+import PaymentCanceled from "../pages/Dashboard/PaymentCanceled/PaymentCanceled";
 
 export const router = createBrowserRouter([
   {
@@ -116,6 +118,14 @@ export const router = createBrowserRouter([
       {
         path: "payment-success",
         element: <PaymentSuccess></PaymentSuccess>,
+      },
+      {
+        path: "payment-canceled",
+        element: <PaymentCanceled></PaymentCanceled>,
+      },
+      {
+        path: "order-tracking",
+        element: <OrderTracking></OrderTracking>,
       },
       {
         path: "my-payments",
