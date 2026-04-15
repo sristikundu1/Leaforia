@@ -1,9 +1,30 @@
-import React, { use } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Loading from "../../../components/Loading/Loading";
 
-const articlesPromises = fetch("/articles.json").then((res) => res.json());
+// const articlesPromises = fetch("/articles.json").then((res) => res.json());
 const Articles = () => {
-  const articles = use(articlesPromises);
+  const [articles, setArticles] = useState([]);
+  const axiosSecure = useAxiosSecure();
+
+  useEffect(() => {
+    axiosSecure
+      .get("/articles")
+      .then((res) => {
+        setArticles(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  console.log(articles);
+  // const homeArticles = articles.slice(0, 4);
+  // const articles = use(articlesPromises);
+  if (articles.length === 0) {
+    return <Loading></Loading>;
+  }
   return (
     <div className="max-w-10/12 mx-auto my-20 mb-36">
       <div className="text-center">
@@ -30,12 +51,12 @@ const Articles = () => {
           </div>
           <div className="p-8">
             <p className="text-gray-500 text-lg mb-2">
-              By {articles[0].author} | {articles[0].date}
+              By {articles[0].author.name} | {articles[0].date}
             </p>
             <h3 className="text-2xl font-bold text-primary mb-6 hover:text-secondary">
               {articles[0].title}
             </h3>
-            <Link to={`/article/${articles[0].id}`}>
+            <Link to={`/article/${articles[0]._id}`}>
               <button className="btn text-white btn-primary px-10 py-3 hover:bg-opacity-90 transition">
                 Read More
               </button>
@@ -60,12 +81,12 @@ const Articles = () => {
               {/* Content on the right */}
               <div className="w-1/2 p-6 flex flex-col justify-center">
                 <p className="text-gray-500 text-lg mb-2">
-                  By {article.author} | {article.date}
+                  By {article.author.name}| {article.date}
                 </p>
                 <h3 className="text-2xl font-bold text-primary mb-4 leading-tight hover:text-secondary">
                   {article.title}
                 </h3>
-                <Link to={`/article/${article.id}`}>
+                <Link to={`/article/${article._id}`}>
                   <button className="btn btn-primary md:px-10 text-white  py-2 text-sm self-start">
                     Read More
                   </button>

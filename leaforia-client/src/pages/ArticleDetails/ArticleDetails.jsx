@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import {
   FaUser,
   FaFacebookF,
@@ -9,22 +9,72 @@ import {
 import { SlCalender } from "react-icons/sl";
 import { useLoaderData, useParams, Link } from "react-router";
 import { motion } from "framer-motion";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { AuthContext } from "../../contexts/AuthContext";
+import toast from "react-hot-toast";
 
 const ArticleDetails = () => {
   const { id } = useParams();
-  const allArticles = useLoaderData();
-  const article = allArticles?.find((item) => item.id == id);
+  const axiosSecure = useAxiosSecure();
+  const { user } = use(AuthContext);
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [commentText, setCommentText] = useState("");
+  const [related, setRelated] = useState([]);
 
+  useEffect(() => {
+    axiosSecure.get("/articles").then((res) => {
+      setRelated(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const res = await axiosSecure.get(`/articles/${id}`);
+        setArticle(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticle();
+  }, [id]);
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+
+    const Comment = {
+      userName: user.displayName,
+      userEmail: user?.email,
+      userImage: user?.photoURL,
+      text: commentText,
+      date: new Date(),
+    };
+
+    try {
+      await axiosSecure.patch(`/articles/${article._id}/comment`, Comment);
+      toast.success("Thanks! Your comment has been posted.");
+
+      // update UI instantly
+      article.comments.unshift(Comment);
+
+      setCommentText("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const relatedArticles = related?.slice(0, 3) || [];
+
+  if (loading) return <p className="text-center mt-20">Loading...</p>;
   if (!article) return <p className="text-center mt-20">Article not found</p>;
 
-  const { image, title, author, date, details } = article;
+  const { image, title, author, date, details, tags } = article;
 
-  // Static related articles for the sidebar (Make dynamic later)
-  const relatedArticles = allArticles?.slice(0, 3) || [];
-
-  // reading time
-  const words = details.split(" ").length;
-  const readTime = Math.ceil(words / 200);
+  const readTime = Math.ceil(details?.split(" ").length / 200);
 
   return (
     <div className="bg-[#fcfcfc] min-h-screen pt-28 pb-20 px-4">
@@ -69,7 +119,7 @@ const ArticleDetails = () => {
                 <SlCalender /> {date}
               </span>
               <span className="flex items-center gap-2">
-                <FaUser /> {author}
+                <FaUser /> {author.name}
               </span>
               <p>⏱ {readTime} min read</p>
             </div>
@@ -86,11 +136,6 @@ const ArticleDetails = () => {
                     key={index}
                     className="flex gap-4 p-4 bg-white rounded-lg shadow-sm border border-gray-100"
                   >
-                    <img
-                      src={comment.userImage}
-                      className="w-10 h-10 rounded-full"
-                      alt=""
-                    />
                     <div>
                       <h4 className="font-bold text-sm">{comment.userName}</h4>
                       <p className="text-xs text-gray-400">
@@ -107,26 +152,35 @@ const ArticleDetails = () => {
                   </p>
                 )}
               </div>
-              <h3 className="text-2xl font-bold mb-4">Leave A Reply</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Name *"
-                  className="p-4 bg-white border border-gray-200 rounded-lg focus:outline-primary"
-                />
-                <input
-                  type="email"
-                  placeholder="Email *"
-                  className="p-4 bg-white border border-gray-200 rounded-lg focus:outline-primary"
-                />
-                <textarea
-                  placeholder="Comment"
-                  className="p-4 bg-white border border-gray-200 rounded-lg focus:outline-primary md:col-span-2 h-40"
-                ></textarea>
-                <button className="bg-primary text-white px-10 py-4 rounded-lg font-bold hover:bg-secondary transition-all w-fit uppercase tracking-wider text-sm">
-                  Post Comment
-                </button>
-              </div>
+              <h3 className="text-2xl font-bold my-4">Leave A Reply</h3>
+              <form onSubmit={handleCommentSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    defaultValue={user?.displayName || ""}
+                    placeholder="Name *"
+                    className="p-4 bg-white border border-gray-200 rounded-lg focus:outline-primary"
+                  />
+                  <input
+                    type="email"
+                    defaultValue={user?.email || ""}
+                    placeholder="Email *"
+                    className="p-4 bg-white border border-gray-200 rounded-lg focus:outline-primary"
+                  />
+                  <textarea
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    placeholder="Comment"
+                    className="p-4 bg-white border border-gray-200 rounded-lg focus:outline-primary md:col-span-2 h-40"
+                  ></textarea>
+                  <button
+                    type="submit"
+                    className="bg-primary text-white px-10 py-4 rounded-lg font-bold hover:bg-secondary transition-all w-fit uppercase tracking-wider text-sm"
+                  >
+                    Post Comment
+                  </button>
+                </div>
+              </form>
             </div>
           </motion.div>
 
@@ -139,20 +193,20 @@ const ArticleDetails = () => {
               </h4>
               <div className="flex items-center gap-4">
                 <img
-                  src="https://i.ibb.co/4pDNDk1/avatar.png"
-                  className="w-14 h-14 rounded-full"
+                  src={article?.author?.image}
+                  className="w-14 h-14 rounded-full object-cover"
                 />
                 <div>
-                  <p className="font-bold text-primary">{author}</p>
-                  <p className="text-sm text-gray-500">Plant Specialist</p>
+                  <p className="font-bold text-primary">{author.name}</p>
+                  <p className="text-sm text-gray-500">{author?.speciality}</p>
                 </div>
               </div>
             </div>
 
-            {/* RELATED ARTICLES WIDGET */}
+            {/* MORE ARTICLES WIDGET */}
             <div className="bg-white p-6 border border-gray-100 rounded-xl shadow-sm">
               <h4 className="font-bold text-gray-800 border-b pb-3 mb-6 uppercase text-sm tracking-widest">
-                Related Articles
+                More Articles
               </h4>
               <div className="space-y-6">
                 {relatedArticles.map((item, idx) => (
@@ -170,7 +224,7 @@ const ArticleDetails = () => {
                       Learn more about how to keep your greenery thriving...
                     </p>
                     <Link
-                      to={`/articles/${item.id}`}
+                      to={`/article/${item._id}`}
                       className="text-xs font-bold text-primary uppercase border-b border-primary pb-0.5 hover:text-secondary hover:border-secondary transition"
                     >
                       View Details
@@ -186,13 +240,7 @@ const ArticleDetails = () => {
                 Tags
               </h4>
               <div className="flex flex-wrap gap-2">
-                {[
-                  "Gardening",
-                  "Interior",
-                  "Plant Care",
-                  "Outdoor",
-                  "Modern",
-                ].map((tag) => (
+                {tags.map((tag) => (
                   <span
                     key={tag}
                     className="px-4 py-1.5 bg-gray-50 text-gray-500 text-xs rounded-full border border-gray-100 hover:bg-primary hover:text-white transition cursor-pointer"

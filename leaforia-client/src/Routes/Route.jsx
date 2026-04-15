@@ -49,7 +49,7 @@ export const router = createBrowserRouter([
 
       {
         path: "/article/:id",
-        loader: () => fetch("/articles.json"),
+        // loader: () => fetch("/articles.json"),
         element: (
           <PrivateRoute>
             <ArticleDetails></ArticleDetails>
