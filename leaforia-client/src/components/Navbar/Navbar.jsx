@@ -48,9 +48,6 @@ const Navbar = () => {
       <NavLink to="/guides" className={navClass}>
         Guides
       </NavLink>
-      <NavLink to="/profile" className={navClass}>
-        Profile
-      </NavLink>
 
       {user && (
         <>

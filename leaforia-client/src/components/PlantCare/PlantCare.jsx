@@ -1,6 +1,7 @@
 import React, { Suspense, use } from "react";
 import PlantCareCard from "../PlantCareCard/PlantCareCard";
 import careCover from "../../assets/banner-bg-3.jpg";
+import { Link } from "react-router";
 
 // fetch the data
 const plantCarePromises = fetch("/plantCare.json").then((res) => res.json());
@@ -32,11 +33,13 @@ const PlantCare = () => {
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 ">
             {plantCareData.map((plantCare, index) => (
-              <PlantCareCard
-                key={plantCare.id}
-                plantCare={plantCare}
-                index={index}
-              ></PlantCareCard>
+              <Link to={`/guides#guide-${plantCare.id}`}>
+                <PlantCareCard
+                  key={plantCare.id}
+                  plantCare={plantCare}
+                  index={index}
+                ></PlantCareCard>
+              </Link>
             ))}
           </div>
         </Suspense>

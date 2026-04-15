@@ -31,8 +31,8 @@ const ManageOrders = () => {
       <table className="table w-full">
         <thead className="bg-gray-50 uppercase text-[10px]">
           <tr>
-            <th>Customer Name</th>
-            <th>Email</th>
+            <th>Customer</th>
+
             <th>Plant</th>
             <th>Price</th>
             <th>Payment Status</th>
@@ -52,7 +52,9 @@ const ManageOrders = () => {
                 {order.plantName} (x{order.quantity})
               </td>
               <td className="font-mono">${order.amount}</td>
-              <td className="font-mono">{order.paymentStatus}</td>
+              <td className="font-mono text-primary font-semibold">
+                {order.paymentStatus}
+              </td>
               <td>
                 <button
                   onClick={() => handleApprove(order._id)}

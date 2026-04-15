@@ -24,6 +24,7 @@ import OrderTracking from "./../pages/Dashboard/OrderTracking/OrderTracking";
 import PaymentCanceled from "../pages/Dashboard/PaymentCanceled/PaymentCanceled";
 import AddArticle from "../pages/Dashboard/AddArticles/AddArticles";
 import WishPlant from "../pages/WishPlant/WishPlant";
+import Guides from "../pages/Guides/Guides";
 
 export const router = createBrowserRouter([
   {
@@ -55,7 +56,6 @@ export const router = createBrowserRouter([
             <ArticleDetails></ArticleDetails>
           </PrivateRoute>
         ),
-        hydrateFallbackElement: <Loading />,
       },
       {
         path: "/about",
@@ -64,6 +64,11 @@ export const router = createBrowserRouter([
       {
         path: "/wishPlants",
         element: <WishPlant></WishPlant>,
+      },
+      {
+        path: "/guides",
+        loader: () => fetch("/plantCare.json"),
+        element: <Guides></Guides>,
       },
     ],
   },
