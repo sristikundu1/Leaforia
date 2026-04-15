@@ -53,7 +53,7 @@ const ManageOrders = () => {
               </td>
               <td className="font-mono">${order.amount}</td>
               <td className="font-mono text-primary font-semibold">
-                {order.paymentStatus}
+                {order.status}
               </td>
               <td>
                 <button

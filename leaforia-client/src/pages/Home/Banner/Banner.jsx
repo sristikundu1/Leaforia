@@ -17,7 +17,7 @@ const Banner = () => {
     slidesToScroll: 1,
     autoplay: true,
     speed: 800,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 200,
     cssEase: "ease-in-out",
   };
 

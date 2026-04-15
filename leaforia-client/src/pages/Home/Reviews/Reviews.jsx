@@ -1,11 +1,17 @@
 import React, { use } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import {
+  Navigation,
+  Pagination,
+  EffectCoverflow,
+  Autoplay,
+} from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "swiper/css/effect-coverflow";
 
 // 1. The promise must resolve to the JSON data, not just the response
 const reviewsPromise = fetch("/reviews.json").then((res) => res.json());
@@ -32,22 +38,32 @@ const Reviews = () => {
 
       {/* Swiper Section */}
       <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
+        modules={[Navigation, Pagination, Autoplay, EffectCoverflow]}
         spaceBetween={30}
         slidesPerView={1}
         loop={true}
-        autoplay={{ delay: 3500, disableOnInteraction: false }}
+        autoplay={{ delay: 800, disableOnInteraction: false }}
         pagination={{ clickable: true, dynamicBullets: true }}
         breakpoints={{
           640: { slidesPerView: 1 },
           768: { slidesPerView: 2 },
           1024: { slidesPerView: 3 },
         }}
+        effect={"coverflow"}
+        grabCursor={true}
+        centeredSlides={true}
+        coverflowEffect={{
+          rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true,
+        }}
         className="pb-16"
       >
         {reviews.map((review) => (
           <SwiperSlide key={review.id}>
-            <div className="h-full bg-secondary/30 h-[250px] border border-base-200 shadow-xl rounded-3xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02]">
+            <div className=" bg-secondary/30 h-[280px] border border-base-200 shadow-xl rounded-3xl p-8 mb-9 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02]">
               <div>
                 {/* Rating Stars */}
                 <div className="flex gap-1 mb-4 text-orange-400">
@@ -89,16 +105,6 @@ const Reviews = () => {
       </Swiper>
 
       {/* Theme Customization */}
-      <style jsx global>{`
-        .swiper-pagination-bullet-active {
-          background-color: #39b8ad !important;
-          width: 24px !important;
-          border-radius: 5px !important;
-        }
-        .swiper-pagination-bullet {
-          transition: all 0.3s ease;
-        }
-      `}</style>
     </div>
   );
 };

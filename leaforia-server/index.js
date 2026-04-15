@@ -76,6 +76,21 @@ async function run() {
       res.send(result);
     });
 
+    // update user info
+    app.patch("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const { name, photo } = req.body;
+      const filter = { email: email };
+      const updatedDoc = {
+        $set: {
+          name: name,
+          photo: photo,
+        },
+      };
+      const result = await userCollection.updateOne(filter, updatedDoc);
+      res.send(result);
+    });
+
     // delete user from database
     app.delete("/user/:id", async (req, res) => {
       const id = req.params.id;
@@ -169,6 +184,55 @@ async function run() {
 
       const result = await articleCollection.updateOne(filter, updateDoc);
       res.send(result);
+    });
+
+    // dashboard admin data
+    app.get("/admin-stats", async (req, res) => {
+      const users = await userCollection.countDocuments();
+      const payments = await paymentCollection.find().toArray();
+
+      // Using simple logic or MongoDB Aggregation Pipeline
+      const approved = await paymentCollection.countDocuments({
+        status: "Delivered",
+      });
+      const pending = await paymentCollection.countDocuments({
+        status: "In Progress",
+      });
+      const revenue = payments.reduce((sum, payment) => sum + payment.price, 0);
+
+      res.send({ users, approved, pending, revenue });
+    });
+
+    // GET user-specific statistics
+    app.get("/user-stats/:email", async (req, res) => {
+      const email = req.params.email;
+
+      try {
+        const purchaseCount = await paymentCollection.countDocuments({
+          email: email,
+        });
+
+        const paymentStats = await paymentCollection
+          .aggregate([
+            { $match: { email: email } },
+            { $group: { _id: null, totalSpent: { $sum: "$price" } } },
+          ])
+          .toArray();
+
+        const totalSpent =
+          paymentStats.length > 0 ? paymentStats[0].totalSpent : 0;
+
+        res.send({
+          purchaseCount,
+          totalSpent,
+          // Professional static placeholders to fill out the UI
+          userLevel: purchaseCount > 5 ? "Pro Gardener" : "Seedling",
+          badges: purchaseCount > 0 ? ["First Purchase"] : [],
+          communityRank: "Top 20%",
+        });
+      } catch (error) {
+        res.status(500).send({ message: "Error" });
+      }
     });
 
     // payment related API

@@ -12,21 +12,27 @@ const NotificationDropdown = () => {
 
   const { role, roleLoading } = useRole();
 
-  const [orderCount, setOrderCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
 
   useEffect(() => {
     if (!user || roleLoading) return;
 
     if (role === "admin") {
-      axiosSecure.get("/admin/order-count").then((res) => {
-        setOrderCount(res.data.count);
-      });
+      // Fetch the actual array of orders
+      axiosSecure
+        .get("/admin/manage-orders")
+        .then((res) => {
+          // The route returns an array, so we take the .length
+          setPendingCount(res.data.length);
+        })
+        .catch((err) => console.error("Admin notification error:", err));
     } else {
+      // Logic for normal users (Wishlist from LocalStorage)
       const fav = getFavPlants();
       setWishlistCount(fav.length);
     }
-  }, [user?.email, role, roleLoading]);
+  }, [user?.email, role, roleLoading, axiosSecure]);
 
   // loading state (important)
   if (roleLoading) return null;
@@ -40,7 +46,7 @@ const NotificationDropdown = () => {
 
           {/*  Dynamic Badge */}
           <span className="badge badge-sm indicator-item bg-primary text-white border-none">
-            {role === "admin" ? orderCount : wishlistCount}
+            {role === "admin" ? pendingCount : wishlistCount}
           </span>
         </div>
       </div>
@@ -52,11 +58,11 @@ const NotificationDropdown = () => {
             <>
               {/* ADMIN UI */}
               <h3 className="font-bold text-lg text-primary">
-                {orderCount} Orders
+                {pendingCount} Orders
               </h3>
 
               <p className="text-sm text-gray-500">
-                {orderCount} orders waiting for approval
+                {pendingCount} orders waiting for approval
               </p>
 
               <div className="border-t pt-3">

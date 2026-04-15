@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import useRole from "../../hooks/useRole";
 import { motion } from "framer-motion"; // Make sure to install framer-motion
@@ -7,6 +7,12 @@ import {
   HiOutlineBadgeCheck,
   HiOutlineUserCircle,
 } from "react-icons/hi"; // Install react-icons
+import toast from "react-hot-toast";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { updatePassword } from "firebase/auth";
+import { FiUnlock } from "react-icons/fi";
+import { IoEyeOutline } from "react-icons/io5";
+import { VscEyeClosed } from "react-icons/vsc";
 
 // Entrance Animation Variants
 const containerVariants = {
@@ -25,14 +31,86 @@ const childVariants = {
 };
 
 const Profile = () => {
-  const { user } = use(AuthContext);
+  const { user, updateUser, setUser } = use(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { role } = useRole();
+  const axiosSecure = useAxiosSecure();
 
   // Define dynamic role styles
   const roleColors = {
     Admin: "bg-red-50 text-red-600 border-red-200",
     User: "bg-green-50 text-green-600 border-green-200",
     Editor: "bg-blue-50 text-blue-600 border-blue-200",
+  };
+
+  // Handler 1: Update Profile (Firebase + DB)
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const name = e.target.name.value;
+    const photo = e.target.photo.value;
+
+    try {
+      await updateUser({ displayName: name, photoURL: photo });
+      setUser((prev) => ({ ...prev, displayName: name, photoURL: photo }));
+
+      // Sync with your DB
+      await axiosSecure.patch(`/users/${user.email}`, {
+        name,
+        photo,
+      });
+
+      toast.success("Success", "Profile details synchronized!", "success");
+      document.getElementById("profile_modal").close();
+    } catch (error) {
+      toast.error("Error", error.message, "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handler 2: Update Password Only (Firebase Only)
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const newPassword = e.target.password.value;
+
+    // Check if user is using Google/Social login
+    const isPasswordUser = user.providerData.some(
+      (provider) => provider.providerId === "password",
+    );
+
+    if (!isPasswordUser) {
+      toast.error(
+        "Social login users cannot change passwords here. Please use Google settings.",
+      );
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await updatePassword(user, newPassword);
+      toast.success("Security credentials updated!");
+      document.getElementById("password_modal").close();
+      e.target.reset();
+    } catch (error) {
+      console.error("Firebase Auth Error:", error.code);
+
+      // Specific error handling for "Eye-Soothing" UX
+      if (error.code === "auth/requires-recent-login") {
+        toast.error(
+          "Please log out and log back in to verify your identity before changing your password.",
+        );
+      } else if (error.code === "auth/weak-password") {
+        toast.error("Your password is too weak. Try 6+ characters.");
+      } else {
+        // This will show the actual message from Firebase (e.g., Network Error)
+        toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -75,7 +153,7 @@ const Profile = () => {
                 Profile Center
               </span>
               <h1 className="text-4xl md:text-5xl font-black text-slate-900 mt-2">
-                Your Digital{" "}
+                Your Digital
                 <span className="text-primary">Garden Account</span>
               </h1>
             </motion.div>
@@ -132,6 +210,9 @@ const Profile = () => {
 
               <div className="flex flex-wrap gap-4">
                 <motion.button
+                  onClick={() =>
+                    document.getElementById("profile_modal").showModal()
+                  }
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                   className="px-6 py-3 bg-primary text-white rounded-xl font-bold uppercase text-xs tracking-widest shadow-lg hover:bg-secondary transition-all"
@@ -139,12 +220,147 @@ const Profile = () => {
                   Edit Profile
                 </motion.button>
                 <motion.button
+                  onClick={() =>
+                    document.getElementById("password_modal").showModal()
+                  }
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                   className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-slate-200 transition-all"
                 >
                   Update Password
                 </motion.button>
+
+                {/* --- MODAL 1: PROFILE UPDATE --- */}
+                <dialog
+                  id="profile_modal"
+                  className="modal modal-bottom sm:modal-middle"
+                >
+                  <div className="modal-box bg-white rounded-3xl p-8 border border-gray-100">
+                    <form onSubmit={handleProfileUpdate}>
+                      <h3 className="text-2xl font-black text-slate-800 mb-6">
+                        Edit <span className="text-primary">Profile</span>
+                      </h3>
+
+                      <div className="space-y-4">
+                        <div className="form-control">
+                          <label className="label font-bold text-xs uppercase text-gray-400">
+                            Full Name
+                          </label>
+                          <input
+                            type="text"
+                            name="name"
+                            defaultValue={user?.displayName}
+                            className="input input-bordered bg-gray-50 rounded-xl focus:outline-primary"
+                            required
+                          />
+                        </div>
+                        <div className="form-control">
+                          <label className="label font-bold text-xs uppercase text-gray-400">
+                            Photo URL
+                          </label>
+                          <input
+                            type="text"
+                            name="photo"
+                            defaultValue={user?.photoURL}
+                            className="input input-bordered bg-gray-50 rounded-xl focus:outline-primary"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="modal-action mt-8 flex gap-3">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            document.getElementById("profile_modal").close()
+                          }
+                          className="btn btn-ghost rounded-xl"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="btn btn-primary flex-1 text-white rounded-xl"
+                        >
+                          {loading ? (
+                            <span className="loading loading-spinner"></span>
+                          ) : (
+                            "Save Changes"
+                          )}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                  </form>
+                </dialog>
+
+                {/* --- MODAL 2: PASSWORD UPDATE --- */}
+                <dialog
+                  id="password_modal"
+                  className="modal modal-bottom sm:modal-middle"
+                >
+                  <div className="modal-box bg-white rounded-3xl p-8 border border-gray-100">
+                    <form onSubmit={handlePasswordUpdate}>
+                      <h3 className="text-2xl font-black text-slate-800 mb-6">
+                        Update <span className="text-red-500">Security</span>
+                      </h3>
+
+                      <div className="space-y-4">
+                        <div className="form-control relative">
+                          <label className="label font-bold text-xs uppercase text-gray-400 mr-2 ">
+                            New Password
+                          </label>
+                          <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            placeholder="••••••••"
+                            className="input input-bordered bg-gray-50 rounded-xl focus:outline-red-500"
+                            required
+                          />
+                          <span
+                            className="absolute right-10 top-3"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <IoEyeOutline /> : <VscEyeClosed />}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-gray-400 italic mt-2">
+                          Note: For security, you might be asked to re-login if
+                          you haven't recently.
+                        </p>
+                      </div>
+
+                      <div className="modal-action mt-8 flex gap-3">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            document.getElementById("password_modal").close()
+                          }
+                          className="btn btn-ghost rounded-xl"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="btn bg-red-500 hover:bg-red-600 border-none text-white flex-1 rounded-xl"
+                        >
+                          {loading ? (
+                            <span className="loading loading-spinner"></span>
+                          ) : (
+                            "Reset Password"
+                          )}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                  </form>
+                </dialog>
               </div>
             </motion.div>
 

@@ -25,6 +25,7 @@ import PaymentCanceled from "../pages/Dashboard/PaymentCanceled/PaymentCanceled"
 import AddArticle from "../pages/Dashboard/AddArticles/AddArticles";
 import WishPlant from "../pages/WishPlant/WishPlant";
 import Guides from "../pages/Guides/Guides";
+import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 
 export const router = createBrowserRouter([
   {
@@ -101,6 +102,10 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      {
+        index: true,
+        element: <DashboardHome></DashboardHome>,
+      },
       {
         path: "add-plants",
         element: <AddPlant></AddPlant>,
