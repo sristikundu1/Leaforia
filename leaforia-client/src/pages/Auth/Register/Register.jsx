@@ -30,6 +30,22 @@ const Register = () => {
     const photo = form.photo.value;
     const password = form.password.value;
 
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+    if (!passwordRegex.test(password)) {
+      const msg =
+        "Password must have 6+ chars, an uppercase, a lowercase, a number, and a symbol.";
+      setError(msg);
+      return toast.error(msg, {
+        style: {
+          borderRadius: "10px",
+          background: "#ff4b2b", // Red background for error
+          color: "#fff",
+        },
+      });
+    }
+
     try {
       // 1. Create User in Firebase
       const userCredential = await registerUser(email, password);
@@ -124,12 +140,17 @@ const Register = () => {
                 name="password"
                 required
                 placeholder="password"
+                title="Must contain at least one uppercase, one lowercase, one number, one special character, and be at least 6 characters long."
+                pattern="^(?=.*[a-z])(?=.*[A-S])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"
               />
 
               <span onClick={() => setShowPassword(!showPassword)}>
                 {showPassword ? <IoEyeOutline /> : <VscEyeClosed />}
               </span>
             </label>
+            <p className="text-xs text-slate-500 mt-2 ml-1">
+              Password requires: 6+ chars, 1 Uppercase, 1 Number, 1 Symbol.
+            </p>
 
             <button type="submit" className="btn btn-primary mt-4">
               Register

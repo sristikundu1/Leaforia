@@ -11,7 +11,7 @@ Leaforia is a sophisticated full-stack platform designed for indoor plant lovers
 Leaforia uses a **Fixed Admin System** to ensure top-level security for store management. Only the user logged in with these specific credentials can access the Admin Dashboard:
 
 - **Admin Email:** `admin@gmail.com`
-- **Admin Password:** `admin@1234`
+- **Admin Password:** `Admin@1234`
 
 > **Security Note:** Access to the `/admin-dashboard` is protected by a specialized `AdminRoute` on the frontend and role-verification middleware on the backend to prevent unauthorized access.
 
