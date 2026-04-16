@@ -4,7 +4,6 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import PlantCard from "../../components/PlantCard/PlantCard";
 import Navbar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Plants = () => {
