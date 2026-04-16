@@ -1,3 +1,4 @@
 node_modules
 .env
 leaforia-firebase-adminsdk.json
+.vercel

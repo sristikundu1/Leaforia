@@ -6,10 +6,13 @@ import { RiMenu2Line } from "react-icons/ri";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import toast from "react-hot-toast";
+import { getFavPlants, removePlant } from "../../utils/localStorage";
+import Wishlist from "./../../pages/WishPlant/WishPlant";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [wishlistCount, setWishlistCount] = useState(0);
   const location = useLocation();
   const isHome = location.pathname === "/";
   // detect scroll
@@ -21,6 +24,24 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Create a function to update the count
+    const syncCount = () => {
+      const fav = getFavPlants();
+      setWishlistCount(fav.length);
+    };
+
+    syncCount(); // Initial count when the Navbar first loads
+
+    // 👂 Listen for the "shout" from the utility file
+    window.addEventListener("wishlistUpdated", syncCount);
+
+    // Clean up the listener when the component unmounts
+    return () => window.removeEventListener("wishlistUpdated", syncCount);
+  }, []);
+
+  console.log(wishlistCount);
 
   //  logout
   const handleLogOut = () => {
@@ -97,12 +118,22 @@ const Navbar = () => {
         <div className="navbar-end gap-4 items-center">
           {/* Icons */}
           <Link to={"/wishPlants"}>
-            <FaRegHeart
-              className={`cursor-pointer transition ${
-                isScrolled ? "text-gray-700" : "text-white"
-              } hover:text-primary`}
-              size={20}
-            />
+            <div className="indicator">
+              <FaRegHeart
+                className={`cursor-pointer transition ${
+                  isScrolled ? "text-gray-700" : "text-white"
+                } hover:text-primary`}
+                size={20}
+              />
+
+              {/*  Dynamic Badge */}
+
+              {wishlistCount > 0 && (
+                <span className="badge badge-sm indicator-item bg-primary text-white border-none">
+                  {wishlistCount}
+                </span>
+              )}
+            </div>
           </Link>
 
           {/* Auth */}

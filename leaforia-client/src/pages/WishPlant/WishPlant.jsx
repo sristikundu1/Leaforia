@@ -5,8 +5,10 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { getFavPlants, removePlant } from "../../utils/localStorage";
 import Loading from "../../components/Loading/Loading";
 import { AuthContext } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router";
 
 const Wishlist = () => {
+  const navigate = useNavigate();
   const [wishlistPlants, setWishlistPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [quantities, setQuantities] = useState({});
@@ -80,6 +82,13 @@ const Wishlist = () => {
   };
 
   const handleBuy = async (plant) => {
+    // Check if user is NOT logged in
+    if (!user) {
+      toast.error("Please login to purchase plants!");
+      return navigate("/auth/login", {
+        state: { from: window.location.pathname },
+      });
+    }
     const paymentInfo = {
       plantId: plant._id,
       email: user.email,

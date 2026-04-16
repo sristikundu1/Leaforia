@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Loading from "../../../components/Loading/Loading";
 import { motion, AnimatePresence } from "framer-motion";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { addPlantId } from "../../../utils/localStorage";
 
 const WeeksPlant = () => {
   const [plant, setPlant] = useState(null);
@@ -28,6 +29,12 @@ const WeeksPlant = () => {
 
       .catch((err) => console.error("Error loading plants:", err));
   }, []);
+
+  // function to add wishlist
+
+  const handleWishPlant = (_id) => {
+    addPlantId(_id);
+  };
 
   if (!plant) {
     return <Loading></Loading>;
@@ -95,7 +102,10 @@ const WeeksPlant = () => {
           </div>
 
           {/* CTA */}
-          <button className="mt-5 px-10 py-4 bg-primary text-white rounded-full shadow-lg hover:scale-105 hover:bg-secondary transition-all duration-300">
+          <button
+            onClick={() => handleWishPlant(plant._id.toString())}
+            className="mt-5 px-10 py-4 bg-primary text-white rounded-full shadow-lg hover:scale-105 hover:bg-secondary transition-all duration-300"
+          >
             Add to Wishlist — ${plant.price}
           </button>
 

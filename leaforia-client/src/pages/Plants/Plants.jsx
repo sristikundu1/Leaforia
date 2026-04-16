@@ -64,8 +64,6 @@ const Plants = () => {
           ))}
         </Tabs>
       </div>
-
-      <Footer></Footer>
     </div>
   );
 };

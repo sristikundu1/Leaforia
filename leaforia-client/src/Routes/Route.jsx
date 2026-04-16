@@ -53,7 +53,9 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: async ({ params }) => {
-          const res = await fetch(`http://localhost:3000/plants/${params.id}`);
+          const res = await fetch(
+            `https://leaforia-server.vercel.app/plants/${params.id}`,
+          );
           return res.json();
         },
         hydrateFallbackElement: <Loading />,

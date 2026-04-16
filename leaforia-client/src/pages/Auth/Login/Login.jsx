@@ -8,6 +8,8 @@ import { IoEyeOutline } from "react-icons/io5";
 import { VscEyeClosed } from "react-icons/vsc";
 import { AuthContext } from "./../../../contexts/AuthContext";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../../firebase/firebase.config";
 
 const Login = () => {
   const location = useLocation();
@@ -17,6 +19,7 @@ const Login = () => {
 
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -49,6 +52,29 @@ const Login = () => {
       });
   };
 
+  // handel forget password
+  const handleForgetPassword = () => {
+    if (!email) {
+      toast.error("Please enter your email address first.");
+      return;
+    }
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        toast.success("Password reset email sent! Check your inbox.", {
+          style: {
+            borderRadius: "10px",
+            background: "#034e3b",
+            color: "#fff",
+          },
+        });
+      })
+      .catch((error) => {
+        setError(error.message);
+        toast.error(
+          "Failed to send reset email. Check if the email is correct.",
+        );
+      });
+  };
   return (
     <div className="max-w-10/12 mx-auto">
       <div className=" text-center my-10">
@@ -65,7 +91,13 @@ const Login = () => {
             {/* email  */}
             <label className="input validator w-96 md:w-[450px]">
               <MdOutlineEmail />
-              <input type="email" name="email" required placeholder="Email" />
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </label>
 
             {/* Password  */}
@@ -96,7 +128,10 @@ const Login = () => {
               </Link>
             </p>
 
-            <p className="font-medium text-sm text-secondary ">
+            <p
+              onClick={handleForgetPassword}
+              className="font-medium text-sm text-secondary "
+            >
               Forgot your Password?
             </p>
           </div>

@@ -24,6 +24,7 @@ const addPlantId = (id) => {
     storePlant.push(id);
     const addPlantData = JSON.stringify(storePlant);
     localStorage.setItem("wishlistPlant", addPlantData);
+    window.dispatchEvent(new Event("wishlistUpdated"));
     toast.success("Plant added to wishlist 🌿");
   }
 };
@@ -34,6 +35,8 @@ const removePlant = (id) => {
   const RemoveStorePlants = getFavPlants(); // get current stored plants
   const updatedPlants = RemoveStorePlants.filter((PlantId) => PlantId !== id); // remove the id
   localStorage.setItem("wishlistPlant", JSON.stringify(updatedPlants)); // save updated array
+  // Dispatch a custom event to notify the whole app
+  window.dispatchEvent(new Event("wishlistUpdated"));
   toast.success("Removed from wishlist ");
 };
 
