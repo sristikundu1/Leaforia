@@ -75,7 +75,7 @@ const Footer = () => {
                 to="/policy#privacy-policy"
                 className="hover:text-primary transition"
               >
-                <a href="#privacy-policy">Privacy & Policy</a>
+                Privacy & Policy
               </NavLink>
             </li>
             <li>

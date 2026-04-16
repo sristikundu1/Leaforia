@@ -243,7 +243,7 @@ const ArticleDetails = () => {
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-4 py-1.5 bg-gray-50 text-gray-500 text-xs rounded-full border border-gray-100 hover:bg-primary hover:text-white transition cursor-pointer"
+                    className="px-4 py-1.5 bg-secondary/30 text-gray-500 text-xs rounded-full border border-gray-100 hover:bg-primary hover:text-white transition cursor-pointer"
                   >
                     {tag}
                   </span>

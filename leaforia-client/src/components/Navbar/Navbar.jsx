@@ -34,14 +34,12 @@ const Navbar = () => {
 
     syncCount(); // Initial count when the Navbar first loads
 
-    // 👂 Listen for the "shout" from the utility file
+    //  Listen for the "shout" from the utility file
     window.addEventListener("wishlistUpdated", syncCount);
 
     // Clean up the listener when the component unmounts
     return () => window.removeEventListener("wishlistUpdated", syncCount);
   }, []);
-
-  console.log(wishlistCount);
 
   //  logout
   const handleLogOut = () => {

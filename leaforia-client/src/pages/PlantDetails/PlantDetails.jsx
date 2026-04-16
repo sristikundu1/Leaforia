@@ -1,6 +1,6 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { FaRegHeart, FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
-import { useLoaderData, useParams } from "react-router";
+import { useLoaderData, useNavigate, useParams } from "react-router";
 import Consultation from "../../components/Consultation/Consultation";
 import PlantCard from "../../components/PlantCard/PlantCard";
 import "slick-carousel/slick/slick.css";
@@ -17,14 +17,25 @@ const PlantDetails = () => {
   const { id } = useParams();
   const { user } = use(AuthContext);
   const axiosSecure = useAxiosSecure();
+  const [data, setData] = useState([]);
 
-  const { plant, relatedPlants } = useLoaderData();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    axiosSecure
+      .get(`/plants/${id}`)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  if (!data?.plant) return <Loading></Loading>;
+  const { plant, relatedPlants } = data;
   const plantData = plant;
   const relatedPlant = relatedPlants;
-
-  if (!plantData) return <Loading></Loading>;
-
   const {
     _id,
     image,
@@ -97,6 +108,10 @@ const PlantDetails = () => {
 
   // payment function
   const handlePayment = async () => {
+    if (!user) {
+      toast.error("Please login to purchase plants! 🌿");
+      return navigate("/auth/login"); // Make sure to import useNavigate
+    }
     const paymentInfo = {
       plantId: id,
       email: user.email,

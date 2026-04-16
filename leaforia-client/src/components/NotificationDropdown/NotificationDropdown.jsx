@@ -18,20 +18,40 @@ const NotificationDropdown = () => {
   useEffect(() => {
     if (!user || roleLoading) return;
 
-    if (role === "admin") {
-      // Fetch the actual array of orders
-      axiosSecure
-        .get("/admin/manage-orders")
-        .then((res) => {
-          // The route returns an array, so we take the .length
-          setPendingCount(res.data.length);
-        })
-        .catch((err) => console.error("Admin notification error:", err));
-    } else {
-      // Logic for normal users (Wishlist from LocalStorage)
-      const fav = getFavPlants();
-      setWishlistCount(fav.length);
-    }
+    // 1. Create the sync functions
+    const syncWishlist = () => {
+      if (role === "user") {
+        const fav = getFavPlants();
+        setWishlistCount(fav.length);
+      }
+    };
+
+    const fetchOrders = () => {
+      if (role === "admin") {
+        axiosSecure
+          .get("/admin/manage-orders")
+          .then((res) => {
+            setPendingCount(res.data.length);
+          })
+          .catch((err) => console.error("Admin notification error:", err));
+      }
+    };
+
+    // 2. Initial Run
+    syncWishlist();
+    fetchOrders();
+
+    // 3. LISTENERS for instant UI updates
+    window.addEventListener("wishlistUpdated", syncWishlist);
+
+    // If you also want admin data to update when you click "Approve" in the dashboard:
+    window.addEventListener("orderStatusChanged", fetchOrders);
+
+    // 4. CLEANUP
+    return () => {
+      window.removeEventListener("wishlistUpdated", syncWishlist);
+      window.removeEventListener("orderStatusChanged", fetchOrders);
+    };
   }, [user?.email, role, roleLoading, axiosSecure]);
 
   // loading state (important)

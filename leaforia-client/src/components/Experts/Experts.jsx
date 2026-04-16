@@ -9,7 +9,7 @@ const Experts = () => {
       name: "Alice Green",
       specialization: "Fertilization & Growth Coach",
       image:
-        "https://thumbs.dreamstime.com/b/gardener-flowerpot-portrait-handsome-holding-pot-flower-greenhouse-plant-seller-taking-care-flowers-75519201.jpg",
+        "https://images.unsplash.com/photo-1615346832334-23e27e819c0d?q=80&w=765&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       direction: { x: -100, y: 0 },
     },
     {
@@ -25,7 +25,7 @@ const Experts = () => {
       name: "Clara Bloom",
       specialization: "Indoor Plant Specialist ",
       image:
-        "https://swaggerandgreys.com/wp-content/uploads/2021/07/copy-of-houseplants-6-2.png",
+        "https://images.unsplash.com/photo-1728881652462-5984859ec3fb?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       direction: { x: 100, y: 0 },
     },
   ];
