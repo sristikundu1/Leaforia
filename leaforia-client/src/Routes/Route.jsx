@@ -29,6 +29,7 @@ import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import FAQ from "../pages/FAQ/FAQ";
 import PolicyPage from "../pages/PolicyPage/PolicyPage";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home></Home>,
+      },
+      {
+        path: "/plants",
+        element: <Plants></Plants>,
       },
       {
         path: "/plant/:id",
@@ -104,12 +109,6 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: "/plants",
-    // loader: () => fetch("/plants.json"),
-    element: <Plants></Plants>,
-    hydrateFallbackElement: <Loading />,
-  },
-  {
     path: "dashboard",
     element: (
       <PrivateRoute>
@@ -170,5 +169,9 @@ export const router = createBrowserRouter([
         element: <Profile></Profile>,
       },
     ],
+  },
+  {
+    path: "/*",
+    element: <ErrorPage></ErrorPage>,
   },
 ]);
