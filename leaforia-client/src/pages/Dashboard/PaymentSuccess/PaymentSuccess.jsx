@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router"; // Fixed import
+import { Link, useSearchParams } from "react-router"; // Fixed import
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { HiOutlineCheckBadge, HiOutlineClock } from "react-icons/hi2";
 import Loading from "../../../components/Loading/Loading";
@@ -35,18 +35,17 @@ const PaymentSuccess = () => {
           and your plants are reserved.
         </p>
         <div className="flex flex-col gap-3">
-          <button
-            onClick={() => (window.location.href = "/dashboard/order-tracking")}
-            className="px-8 py-3 bg-primary text-white rounded-full font-bold hover:shadow-lg transition-all"
-          >
-            Track My Order
-          </button>
-          <button
-            onClick={() => (window.location.href = "/")}
-            className="text-gray-500 hover:text-primary font-medium"
-          >
-            Back to Home
-          </button>
+          <Link to={"/dashboard/order-tracking"}>
+            <button className="px-8 py-3 bg-primary text-white rounded-full font-bold hover:shadow-lg transition-all">
+              Track My Order
+            </button>
+          </Link>
+
+          <Link to={"/"}>
+            <button className="text-gray-500 hover:text-primary font-medium">
+              Back to Home
+            </button>
+          </Link>
         </div>
       </div>
     </div>
