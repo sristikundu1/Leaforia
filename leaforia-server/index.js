@@ -6,9 +6,33 @@ const stripe = require("stripe")(process.env.STRIPE_SECRETE);
 const app = express();
 const port = process.env.PORT || 3000;
 
+const admin = require("firebase-admin");
+
+const serviceAccount = require("./leaforia-firebase-adminsdk.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
 // middleware
 app.use(cors());
 app.use(express.json());
+
+const verifyFBToken = async (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(401).send({ message: "unauthorized access" });
+  }
+
+  try {
+    const idToken = token.split(" ")[1];
+    const decoded = await admin.auth().verifyIdToken(idToken);
+    req.decoded_email = decoded.email;
+    next();
+  } catch (err) {
+    return res.status(401).send({ message: "unauthorized access" });
+  }
+};
 
 app.get("/", (req, res) => {
   res.send("plant server!");
@@ -35,7 +59,6 @@ async function run() {
     const userCollection = client.db("LeaforiaDB").collection("users");
     const paymentCollection = client.db("LeaforiaDB").collection("payments");
     const articleCollection = client.db("LeaforiaDB").collection("articles");
-    const wishListCollection = client.db("LeaforiaDB").collection("wishlist");
 
     // user related API
 
@@ -208,30 +231,40 @@ async function run() {
       const email = req.params.email;
 
       try {
-        const purchaseCount = await paymentCollection.countDocuments({
-          email: email,
-        });
+        const anyRecord = await paymentCollection.findOne({ email: email });
 
-        const paymentStats = await paymentCollection
+        const stats = await paymentCollection
           .aggregate([
-            { $match: { email: email } },
-            { $group: { _id: null, totalSpent: { $sum: "$price" } } },
+            {
+              $match: {
+                customer_email: email,
+                status: "Delivered", // Only count successful deliveries
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                purchaseCount: { $sum: 1 }, // Counts the documents
+                totalSpent: { $sum: "$amount" }, // Sums the 'amount' field
+              },
+            },
           ])
           .toArray();
 
-        const totalSpent =
-          paymentStats.length > 0 ? paymentStats[0].totalSpent : 0;
+        // If no records found, return zeros
+        const result =
+          stats.length > 0 ? stats[0] : { purchaseCount: 0, totalSpent: 0 };
 
         res.send({
-          purchaseCount,
-          totalSpent,
-          // Professional static placeholders to fill out the UI
-          userLevel: purchaseCount > 5 ? "Pro Gardener" : "Seedling",
-          badges: purchaseCount > 0 ? ["First Purchase"] : [],
+          purchaseCount: result.purchaseCount,
+          totalSpent: result.totalSpent,
+          userLevel: result.purchaseCount >= 5 ? "Pro Gardener" : "Seedling",
+          badges: result.purchaseCount > 0 ? ["First Bloom"] : [],
           communityRank: "Top 20%",
         });
       } catch (error) {
-        res.status(500).send({ message: "Error" });
+        console.error("Stats Error:", error);
+        res.status(500).send({ message: "Error fetching statistics" });
       }
     });
 
@@ -252,8 +285,13 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/active-order/:email", async (req, res) => {
+    app.get("/active-order/:email", verifyFBToken, async (req, res) => {
       const email = req.params.email;
+
+      // check eail address
+      if (email !== req.decoded_email) {
+        return res.status(403).send({ message: "forbidden access" });
+      }
       // Look for the most recent order that is still "In Progress"
       const order = await paymentCollection.findOne(
         { customer_email: email, status: "In Progress" },
@@ -262,8 +300,13 @@ async function run() {
       res.send(order); // Returns null if no "In Progress" orders found
     });
 
-    app.get("/my-payments", async (req, res) => {
+    app.get("/my-payments", verifyFBToken, async (req, res) => {
       const email = req.query.email;
+
+      // check email address
+      if (email !== req.decoded_email) {
+        return res.status(403).send({ message: "forbidden access" });
+      }
 
       const result = await paymentCollection
         .find({ customer_email: email })

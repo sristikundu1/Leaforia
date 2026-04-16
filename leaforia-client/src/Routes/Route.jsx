@@ -3,7 +3,6 @@ import HomeLayout from "./../layouts/HomeLayout";
 import Home from "../pages/Home/Home";
 import PlantDetails from "../pages/PlantDetails/PlantDetails";
 import AuthLayout from "../layouts/AuthLayout";
-import PrivateRoute from "../contexts/PrivateRoute";
 import Loading from "../components/Loading/Loading";
 import Profile from "../pages/Profile/Profile";
 import Plants from "../pages/Plants/Plants";
@@ -30,6 +29,8 @@ import ContactUs from "../pages/ContactUs/ContactUs";
 import FAQ from "../pages/FAQ/FAQ";
 import PolicyPage from "../pages/PolicyPage/PolicyPage";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -122,31 +123,59 @@ export const router = createBrowserRouter([
       },
       {
         path: "add-plants",
-        element: <AddPlant></AddPlant>,
+        element: (
+          <AdminRoute>
+            <AddPlant></AddPlant>
+          </AdminRoute>
+        ),
       },
       {
         path: "all-plants",
-        element: <AllPlants></AllPlants>,
+        element: (
+          <AdminRoute>
+            <AllPlants></AllPlants>
+          </AdminRoute>
+        ),
       },
       {
         path: "add-articles",
-        element: <AddArticle></AddArticle>,
+        element: (
+          <AdminRoute>
+            <AddArticle></AddArticle>
+          </AdminRoute>
+        ),
       },
       {
         path: "edit-plant/:id",
-        element: <UpdatePlant></UpdatePlant>,
+        element: (
+          <AdminRoute>
+            <UpdatePlant></UpdatePlant>
+          </AdminRoute>
+        ),
       },
       {
         path: "user-management",
-        element: <UserManagement></UserManagement>,
+        element: (
+          <AdminRoute>
+            <UserManagement></UserManagement>
+          </AdminRoute>
+        ),
       },
       {
         path: "manage-orders",
-        element: <ManageOrders></ManageOrders>,
+        element: (
+          <AdminRoute>
+            <ManageOrders></ManageOrders>
+          </AdminRoute>
+        ),
       },
       {
         path: "all-deliveries",
-        element: <AllDeliveries></AllDeliveries>,
+        element: (
+          <AdminRoute>
+            <AllDeliveries></AllDeliveries>
+          </AdminRoute>
+        ),
       },
       {
         path: "payment-success",

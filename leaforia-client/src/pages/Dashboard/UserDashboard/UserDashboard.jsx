@@ -11,6 +11,8 @@ import {
 
 import { AuthContext } from "./../../../contexts/AuthContext";
 import useAxiosSecure from "./../../../hooks/useAxiosSecure";
+import { getFavPlants } from "../../../utils/localStorage";
+import { Link } from "react-router";
 
 const UserDashboard = () => {
   const { user } = use(AuthContext);
@@ -26,12 +28,12 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        // 1. Fetch Dynamic Data from MongoDB
+        // 1. Fetch Stats from DB
         const res = await axiosSecure.get(`/user-stats/${user?.email}`);
         setStats(res.data);
 
-        // 2. Fetch Wishlist from LocalStorage
-        const localData = JSON.parse(localStorage.getItem("wishlist")) || [];
+        // 2. Fetch Wishlist
+        const localData = getFavPlants() || [];
         setWishlistCount(localData.length);
       } catch (err) {
         console.error("Error loading dashboard:", err);
@@ -42,6 +44,9 @@ const UserDashboard = () => {
 
     if (user?.email) fetchDashboardData();
   }, [user?.email, axiosSecure]);
+
+  const purchasesToNextLevel =
+    stats.purchaseCount < 5 ? 5 - stats.purchaseCount : 0;
 
   if (loading)
     return (
@@ -56,10 +61,10 @@ const UserDashboard = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative p-8 md:p-12 bg-slate-900 rounded-[40px] text-white shadow-2xl overflow-hidden"
+        className="relative p-8 md:p-12 bg-secondary rounded-[40px] text-white shadow-2xl overflow-hidden"
       >
         <div className="relative z-10">
-          <span className="px-4 py-1 bg-primary/20 border border-primary/30 rounded-full text-[10px] font-black uppercase tracking-widest text-primary">
+          <span className="px-4 py-1 bg-[#dad7cd]/20 border border-[#dad7cd]/30 rounded-full text-[10px] font-black uppercase tracking-widest text-[#dad7cd]">
             Account Status: Active
           </span>
           <h1 className="text-4xl md:text-5xl font-black mt-4">
@@ -68,18 +73,31 @@ const UserDashboard = () => {
               {user?.displayName?.split(" ")[0]}!
             </span>
           </h1>
-          <p className="mt-2 text-slate-400 max-w-md">
-            You've spent <strong>${stats.totalSpent}</strong> on your botanical
-            journey. Complete 3 more purchases to reach <strong>Level 3</strong>
-            .
+          <p className="mt-2 text-slate-300 max-w-md">
+            You've spent{" "}
+            <strong>${stats.totalSpent?.toLocaleString() || 0}</strong> on your
+            botanical journey.
+            {purchasesToNextLevel > 0 ? (
+              <>
+                Complete {purchasesToNextLevel} more purchases to reach{" "}
+                <strong>Pro Gardener</strong>.
+              </>
+            ) : (
+              <>
+                You have achieved the highest <strong>Pro Gardener</strong>{" "}
+                status!
+              </>
+            )}
           </p>
           <div className="mt-8 flex gap-4">
             <button className="btn btn-primary btn-sm md:btn-md rounded-xl border-none text-white font-bold">
               Marketplace
             </button>
-            <button className="btn btn-ghost btn-sm md:btn-md rounded-xl border border-slate-700 text-slate-300">
-              View Orders
-            </button>
+            <Link to={"order-tracking"}>
+              <button className="btn btn-ghost btn-sm md:btn-md rounded-xl border hover:text-primary border-slate-700 text-slate-300">
+                View Orders
+              </button>
+            </Link>
           </div>
         </div>
         <HiOutlineBadgeCheck className="absolute -right-10 -bottom-10 text-white/5 text-[280px] rotate-12" />
@@ -93,7 +111,7 @@ const UserDashboard = () => {
               Purchased Items
             </p>
             <h3 className="text-3xl font-black text-slate-800">
-              {stats.purchaseCount}
+              {stats.purchaseCount || 0}
             </h3>
           </div>
           <div className="p-4 bg-slate-50 text-slate-400 group-hover:bg-primary group-hover:text-white rounded-2xl transition-all text-2xl">
