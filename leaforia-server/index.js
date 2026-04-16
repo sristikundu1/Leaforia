@@ -60,10 +60,24 @@ async function run() {
     const paymentCollection = client.db("LeaforiaDB").collection("payments");
     const articleCollection = client.db("LeaforiaDB").collection("articles");
 
+    // middle admin before allowing admin activity
+    // that token must be used after verifyFBToken
+    const verifyAdmin = async (req, res, next) => {
+      const email = req.decoded_email;
+      const query = { email };
+      const user = await userCollection.findOne(query);
+
+      if (!user || user.role !== "admin") {
+        return res.status(403).send({ message: "forbidden access" });
+      }
+
+      next();
+    };
+
     // user related API
 
     // get all user
-    app.get("/users", async (req, res) => {
+    app.get("/users", verifyFBToken, verifyAdmin, async (req, res) => {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
@@ -100,7 +114,7 @@ async function run() {
     });
 
     // update user info
-    app.patch("/users/:email", async (req, res) => {
+    app.patch("/users/:email", verifyFBToken, async (req, res) => {
       const email = req.params.email;
       const { name, photo } = req.body;
       const filter = { email: email };
@@ -115,7 +129,7 @@ async function run() {
     });
 
     // delete user from database
-    app.delete("/user/:id", async (req, res) => {
+    app.delete("/user/:id", verifyFBToken, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await userCollection.deleteOne(query);
@@ -129,7 +143,7 @@ async function run() {
     });
 
     // get a plant info from database
-    app.get("/plants/:id", async (req, res) => {
+    app.get("/plants/:id", verifyFBToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const plant = await plantCollection.findOne(query);
@@ -147,14 +161,14 @@ async function run() {
     });
 
     // plant data add in database
-    app.post("/plants", async (req, res) => {
+    app.post("/plants", verifyFBToken, verifyAdmin, async (req, res) => {
       const plants = req.body;
       const result = await plantCollection.insertOne(plants);
       res.send(result);
     });
 
     // edit plant data from database
-    app.patch("/plants/:id", async (req, res) => {
+    app.patch("/plants/:id", verifyFBToken, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
       const updatedPlant = req.body;
@@ -167,7 +181,7 @@ async function run() {
     });
 
     // delete plant from database
-    app.delete("/plants/:id", async (req, res) => {
+    app.delete("/plants/:id", verifyFBToken, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
 
@@ -182,21 +196,21 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/articles/:id", async (req, res) => {
+    app.get("/articles/:id", verifyFBToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await articleCollection.findOne(query);
       res.send(result);
     });
 
-    app.post("/articles", async (req, res) => {
+    app.post("/articles", verifyFBToken, verifyAdmin, async (req, res) => {
       const article = req.body;
       const result = await articleCollection.insertOne(article);
       res.send(result);
     });
 
     // update /add comment in the db
-    app.patch("/articles/:id/comment", async (req, res) => {
+    app.patch("/articles/:id/comment", verifyFBToken, async (req, res) => {
       const id = req.params.id;
       const comment = req.body; // { userName, text, userImage, date }
 
@@ -210,7 +224,7 @@ async function run() {
     });
 
     // dashboard admin data
-    app.get("/admin-stats", async (req, res) => {
+    app.get("/admin-stats", verifyFBToken, verifyAdmin, async (req, res) => {
       const users = await userCollection.countDocuments();
       const payments = await paymentCollection.find().toArray();
 
@@ -227,7 +241,7 @@ async function run() {
     });
 
     // GET user-specific statistics
-    app.get("/user-stats/:email", async (req, res) => {
+    app.get("/user-stats/:email", verifyFBToken, async (req, res) => {
       const email = req.params.email;
 
       try {
@@ -270,21 +284,32 @@ async function run() {
 
     // payment related API
     // get all the payment that status is paid (customer pay the price)
-    app.get("/admin/manage-orders", async (req, res) => {
-      const result = await paymentCollection
-        .find({ paymentStatus: "paid", status: "In Progress" })
-        .toArray();
-      res.send(result);
-    });
+    app.get(
+      "/admin/manage-orders",
+      verifyFBToken,
+      verifyAdmin,
+      async (req, res) => {
+        const result = await paymentCollection
+          .find({ paymentStatus: "paid", status: "In Progress" })
+          .toArray();
+        res.send(result);
+      },
+    );
 
     // get all the deliveries that completed
-    app.get("/admin/deliveries", async (req, res) => {
-      const result = await paymentCollection
-        .find({ status: "Delivered" })
-        .toArray();
-      res.send(result);
-    });
+    app.get(
+      "/admin/deliveries",
+      verifyFBToken,
+      verifyAdmin,
+      async (req, res) => {
+        const result = await paymentCollection
+          .find({ status: "Delivered" })
+          .toArray();
+        res.send(result);
+      },
+    );
 
+    // get the order info that i paid but admin don't approved  yet
     app.get("/active-order/:email", verifyFBToken, async (req, res) => {
       const email = req.params.email;
 
@@ -300,6 +325,7 @@ async function run() {
       res.send(order); // Returns null if no "In Progress" orders found
     });
 
+    // get the info that completed the purchase
     app.get("/my-payments", verifyFBToken, async (req, res) => {
       const email = req.query.email;
 
@@ -316,7 +342,7 @@ async function run() {
       res.send(result);
     });
 
-    app.post("/create-checkout-session", async (req, res) => {
+    app.post("/create-checkout-session", verifyFBToken, async (req, res) => {
       const paymentInfo = req.body;
       const amount = parseInt(paymentInfo.price) * 100;
       const session = await stripe.checkout.sessions.create({
@@ -349,7 +375,7 @@ async function run() {
       res.send({ url: session.url });
     });
 
-    app.patch("/payment-success", async (req, res) => {
+    app.patch("/payment-success", verifyFBToken, async (req, res) => {
       const sessionId = req.query.session_id;
       if (!sessionId) return res.status(400).send({ message: "No session ID" });
       const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -387,13 +413,18 @@ async function run() {
       }
     });
 
-    app.patch("/orders/approve/:id", async (req, res) => {
-      const id = req.params.id;
-      const filter = { _id: new ObjectId(id) };
-      const updateDoc = { $set: { status: "Delivered" } };
-      const result = await paymentCollection.updateOne(filter, updateDoc);
-      res.send(result);
-    });
+    app.patch(
+      "/orders/approve/:id",
+      verifyFBToken,
+      verifyAdmin,
+      async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: new ObjectId(id) };
+        const updateDoc = { $set: { status: "Delivered" } };
+        const result = await paymentCollection.updateOne(filter, updateDoc);
+        res.send(result);
+      },
+    );
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
