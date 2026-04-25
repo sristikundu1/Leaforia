@@ -42,7 +42,9 @@ const Plants = () => {
 
         <div className="flex justify-center mt-8">
           <Link to={"/plants"}>
-            <button className="btn btn-primary px-10">Show All Plants</button>
+            <button className="btn btn-primary px-10 border-none">
+              Show All Plants
+            </button>
           </Link>
         </div>
       </div>

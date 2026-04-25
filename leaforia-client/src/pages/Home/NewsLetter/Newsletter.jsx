@@ -41,7 +41,7 @@ const Newsletter = () => {
       });
   };
   return (
-    <div className="bg-base-100 py-20 px-4">
+    <div className=" py-20 px-4">
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
         {/* LEFT: Animation */}
         <div className="flex justify-center">

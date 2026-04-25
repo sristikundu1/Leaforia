@@ -66,7 +66,7 @@ const Banner = () => {
                   <div className="mt-8 flex gap-4">
                     <Link
                       to="/plants"
-                      className="btn bg-primary text-white px-6"
+                      className="btn bg-primary text-white px-6 border-none"
                     >
                       Explore Plants
                     </Link>

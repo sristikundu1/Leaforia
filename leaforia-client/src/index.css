@@ -2,15 +2,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700;800&family=Poppins:wght@500;600&display=swap");
 
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: leaforia --default;
+}
 
 @plugin "daisyui/theme" {
-  name: "light";
+  name: "leaforia";
   default: true;
   --color-primary: #006838;
   --color-secondary: #718355;
   --color-accent: #0b1a13;
   --color-base-100: #fffff0;
+}
+
+:root {
+  color-scheme: light;
 }
 
 /* Apply specific fonts to elements globally */
@@ -28,6 +34,7 @@ h6 {
 
 body {
   font-family: "Lato", sans-serif;
+  background-color: #fffff0;
 }
 
 /* Force DaisyUI buttons to use Poppins */
